@@ -90,7 +90,7 @@ class AddSubjectView: UIView {
         timePicker.snp.makeConstraints {
             $0.top.equalTo(timeSetting.snp.bottom).offset(14)
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(200)
+            $0.height.equalTo(150)
         }
         
         addBtn.snp.makeConstraints {

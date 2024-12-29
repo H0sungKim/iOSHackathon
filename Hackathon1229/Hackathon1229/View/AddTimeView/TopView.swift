@@ -27,13 +27,13 @@ class TopView: UIView {
         $0.spacing = 6
     }
 
-    private lazy var mainTitle = UILabel().then {
+    public lazy var mainTitle = UILabel().then {
         $0.textColor = .black
         $0.textAlignment = .center
         $0.font = .systemFont(ofSize: 21, weight: .semibold)
     }
     
-    private lazy var subTitle = UILabel().then {
+    public lazy var subTitle = UILabel().then {
         $0.textColor = UIColor(hexCode: "#797979")
         $0.textAlignment = .center
         $0.font = .systemFont(ofSize: 14, weight: .regular)

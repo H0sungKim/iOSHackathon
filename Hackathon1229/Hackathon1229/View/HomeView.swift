@@ -56,10 +56,10 @@ class HomeView: UIView {
         }
         
         studyCollectionView.snp.makeConstraints {
-            $0.top.equalTo(topView.snp.bottom).offset(75)
+            $0.top.equalTo(topView.snp.bottom).offset(50)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(346)
-            $0.height.equalTo(320)
+            $0.height.equalTo(300)
         }
         
         plus.snp.makeConstraints {
