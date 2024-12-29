@@ -11,11 +11,11 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = addStudyTimeView
+        self.view = homeView
     }
     
-    private lazy var addStudyTimeView: AddStudyTimeView = {
-        let view = AddStudyTimeView()
+    private lazy var homeView: HomeView = {
+        let view = HomeView()
         return view
     }()
 }
