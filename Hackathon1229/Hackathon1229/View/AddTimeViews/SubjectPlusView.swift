@@ -33,6 +33,7 @@ class SubjectPlusView: UIView {
         $0.distribution = .fill
         $0.alignment = .center
         $0.spacing = 9
+        $0.isUserInteractionEnabled = true
     }
     
     func setupView() -> UIView? {
