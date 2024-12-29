@@ -79,6 +79,7 @@ class CircleTimerView: UIView {
         timerLabel.text = formatTime(from: remainingTime)
         addSubview(timerLabel)
         
+        addSubview(btn1)
         btn1.snp.makeConstraints{
             $0.top.equalTo(subjectLabel.snp.bottom).offset(72)
             $0.centerX.equalToSuperview()
