@@ -38,7 +38,9 @@ class TimerView: UIView {
     
     private lazy var btn1 = UIButton().then {
         $0.layer.cornerRadius = 38
-        $0.backgroundColor = UIColor(hexCode: "")
+        $0.backgroundColor = UIColor(hexCode: "E6E6E7")
+        $0.setImage(UIImage(resource: .plus), for: <#T##UIControl.State#>)
+        $0.setTitle("10:00", for: .normal)
     }
     
     private lazy var btn2 = UIButton().then {
