@@ -6,15 +6,18 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class TimerView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    private lazy var timerTitle = UILabel().then {
+        $0.text = "타이머"
+        $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
     }
-    */
-
+    
+    private lazy var backBtn = UIButton().then {
+        $0.setTitle(<#T##title: String?##String?#>, for: <#T##UIControl.State#>)
+    }
 }
+
