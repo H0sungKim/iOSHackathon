@@ -66,12 +66,18 @@ class TimerView: UIView {
     lazy var stopImage2 = UIView().then {
         $0.backgroundColor = .white
         $0.isUserInteractionEnabled = false
-        
+    }
+    
+    lazy var stopImage3 = UIImageView().then {
+        $0.image = UIImage(resource: .stop)
+        $0.isUserInteractionEnabled = false
     }
     
     lazy var btn3 = UIButton().then {
         $0.layer.cornerRadius = 38
         $0.backgroundColor = UIColor(hexCode: "51C878")
+        $0.setImage(UIImage(resource: .stop), for: .normal)
+        $0.setImage(UIImage(resource: .group), for: .selected)
     }
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
@@ -102,7 +108,7 @@ class TimerView: UIView {
         }
         
         [
-            timerTitle, progressTitle, btn1, btn2, btn3, stopImage1, stopImage2, collectionView, circleTimerView
+            timerTitle, progressTitle, btn1, btn2, btn3, collectionView, circleTimerView
         ].forEach{
             contentView.addSubview($0)
         }
@@ -134,20 +140,6 @@ class TimerView: UIView {
             $0.right.equalTo(btn3.snp.left).offset(-8)
             $0.height.width.equalTo(76)
             $0.top.equalTo(progressTitle.snp.bottom).offset(400)
-        }
-        
-        stopImage1.snp.makeConstraints{
-            $0.width.equalTo(6)
-            $0.height.equalTo(18)
-            $0.top.equalTo(btn3.snp.top).offset(29)
-            $0.left.equalTo(btn3.snp.left).offset(29)
-        }
-        
-        stopImage2.snp.makeConstraints{
-            $0.width.equalTo(6)
-            $0.height.equalTo(18)
-            $0.top.equalTo(btn3.snp.top).offset(29)
-            $0.left.equalTo(stopImage1.snp.right).offset(5)
         }
         
         btn3.snp.makeConstraints{

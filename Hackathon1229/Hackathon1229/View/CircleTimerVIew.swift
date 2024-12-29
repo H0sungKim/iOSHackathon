@@ -18,6 +18,8 @@ class CircleTimerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    lazy var timerView = TimerView()
+    
     private var timer: Timer?
     private var shapeLayer: CAShapeLayer!
     private var backgroundLayer: CAShapeLayer!
@@ -126,13 +128,27 @@ class CircleTimerView: UIView {
     
     var isRunning = false
     
-    @objc func toggleTimer() {
+    @objc func toggleTimer(_ sender: UIButton) {
+        // 상태 변경 전에 디버그 로그
+        print("Before toggle: isSelected = \(sender.isSelected), isRunning = \(isRunning)")
+        
+        // 버튼 상태 변경
+        sender.isSelected.toggle()
+        isRunning = sender.isSelected // 실행 상태 동기화
+
+        // 상태 변경 후 디버그 로그
+        print("After toggle: isSelected = \(sender.isSelected), isRunning = \(isRunning)")
+
+        // 상태에 따라 동작 및 이미지 설정
         if isRunning {
-            stopTimer()
-        } else {
             startTimer()
+        } else {
+            stopTimer()
         }
     }
+
+
+
 
     private func startTimer() {
         print("Start timer called") // 디버깅 로그
@@ -229,12 +245,12 @@ class CircleTimerView: UIView {
         // 시간 초기화
         remainingTime = duration
         timerLabel.text = formatTime(from: remainingTime)
-
+        
         // 실행 상태 초기화
         isRunning = false
         print("Timer reset to initial state") // 디버깅 로그
     }
-
+    
 
 
 
