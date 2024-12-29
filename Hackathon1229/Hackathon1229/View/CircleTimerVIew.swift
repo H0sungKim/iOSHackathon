@@ -90,23 +90,39 @@ class CircleTimerView: UIView {
         return CGPoint(x: center.x + radius * cos(angle), y: center.y + radius * sin(angle))
     }
 
-    @objc func startTimer() {
+    var set = 1 //1이면 실행, 0이면 중지
+    
+    /*@objc func startTimer() {
+        // 이미 실행 중인 경우 실행하지 않음
+        if timer != nil && timer?.isValid == true {
+            print("Timer is already running") // 디버깅 로그
+            return
+        }
+
         print("Start timer called") // 디버깅 로그
-        remainingTime = duration
-        shapeLayer.strokeEnd = 0 // 초기화
+
+        // 현재 진행 상태 확인
+        let currentStrokeEnd: CGFloat = shapeLayer.presentation()?.strokeEnd ?? shapeLayer.strokeEnd
+        let remainingDuration = remainingTime > 0 ? remainingTime : duration * (1.0 - Double(currentStrokeEnd))
+        
+        // 초기 상태 설정
+        shapeLayer.strokeEnd = currentStrokeEnd
+        remainingTime = remainingDuration
         timerLabel.text = formatTime(from: remainingTime)
 
+        // 기존 애니메이션과 타이머 초기화
         timer?.invalidate()
         displayLink?.invalidate()
 
-        // 애니메이션 설정
+        // 새로운 애니메이션 설정
         let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = currentStrokeEnd // 현재 상태에서 시작
         animation.toValue = 1.0
-        animation.duration = duration
+        animation.duration = remainingDuration
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
         shapeLayer.add(animation, forKey: "circleAnimation")
-        print("Animation added. Duration: \(animation.duration)") // 디버깅 로그
+        print("Animation added. From: \(currentStrokeEnd), Duration: \(animation.duration)") // 디버깅 로그
 
         // 핸들 동기화 애니메이션
         displayLink = CADisplayLink(target: self, selector: #selector(updateHandlePosition))
@@ -128,7 +144,121 @@ class CircleTimerView: UIView {
                 print("Timer ended") // 디버깅 로그
             }
         }
+    }*/
+    
+    var isRunning = false
+    
+    @objc func toggleTimer() {
+        if isRunning {
+            stopTimer()
+        } else {
+            startTimer()
+        }
     }
+
+    private func startTimer() {
+        print("Start timer called") // 디버깅 로그
+        isRunning = true // 상태 변경
+
+        // 현재 진행 상태 확인
+        let currentStrokeEnd: CGFloat = shapeLayer.presentation()?.strokeEnd ?? shapeLayer.strokeEnd
+        let remainingDuration = remainingTime > 0 ? remainingTime : duration * (1.0 - Double(currentStrokeEnd))
+
+        // 초기 상태 설정
+        shapeLayer.strokeEnd = currentStrokeEnd
+        remainingTime = remainingDuration
+        timerLabel.text = formatTime(from: remainingTime)
+
+        // 기존 애니메이션과 타이머 초기화
+        timer?.invalidate()
+        displayLink?.invalidate()
+
+        // 새로운 애니메이션 설정
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = currentStrokeEnd // 현재 상태에서 시작
+        animation.toValue = 1.0
+        animation.duration = remainingDuration
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+        shapeLayer.add(animation, forKey: "circleAnimation")
+        print("Animation added. From: \(currentStrokeEnd), Duration: \(animation.duration)") // 디버깅 로그
+
+        // 핸들 동기화 애니메이션
+        displayLink = CADisplayLink(target: self, selector: #selector(updateHandlePosition))
+        displayLink?.add(to: .main, forMode: .default)
+
+        // 타이머 카운트다운
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            self.remainingTime -= 1
+            self.timerLabel.text = self.formatTime(from: self.remainingTime)
+
+            if self.remainingTime <= 0 {
+                self.stopTimer() // 타이머 완료 시 정지
+                print("Timer ended") // 디버깅 로그
+            }
+        }
+    }
+
+    private func stopTimer() {
+        print("Stop timer called") // 디버깅 로그
+        isRunning = false // 상태 변경
+
+        // 타이머 중단
+        timer?.invalidate()
+        timer = nil
+
+        // 디스플레이 링크 중단
+        displayLink?.invalidate()
+        displayLink = nil
+
+        // 애니메이션 중단
+        shapeLayer.removeAnimation(forKey: "circleAnimation")
+
+        // 현재 진행 상태에서 정지
+        if let presentationLayer = shapeLayer.presentation() {
+            let strokeEnd = presentationLayer.strokeEnd
+            shapeLayer.strokeEnd = strokeEnd // 애니메이션 상태 고정
+            handleView.center = pointOnCircle(at: CGFloat(strokeEnd)) // 핸들 위치 갱신
+            print("Animation stopped at strokeEnd: \(strokeEnd)") // 디버깅 로그
+        }
+
+        // UI 갱신
+        timerLabel.text = formatTime(from: remainingTime)
+    }
+    
+    @objc func realStopTimer() {
+        print("Reset and stop timer called") // 디버깅 로그
+
+        // 타이머 중단
+        timer?.invalidate()
+        timer = nil
+
+        // 디스플레이 링크 중단
+        displayLink?.invalidate()
+        displayLink = nil
+
+        // 애니메이션 초기화
+        shapeLayer.removeAnimation(forKey: "circleAnimation")
+        shapeLayer.strokeEnd = 0 // 초기 상태로 복구
+
+        // 핸들 위치 초기화
+        handleView.center = pointOnCircle(at: 0)
+
+        // 시간 초기화
+        remainingTime = duration
+        timerLabel.text = formatTime(from: remainingTime)
+
+        // 실행 상태 초기화
+        isRunning = false
+        print("Timer reset to initial state") // 디버깅 로그
+    }
+
+
+
 
     @objc private func updateHandlePosition() {
         guard let presentationLayer = shapeLayer.presentation() else {

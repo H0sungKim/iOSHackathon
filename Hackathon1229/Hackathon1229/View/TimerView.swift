@@ -57,7 +57,7 @@ class TimerView: UIView {
         $0.configuration = config
     }
     
-    private lazy var btn2 = UIButton().then {
+    lazy var btn2 = UIButton().then {
         $0.layer.cornerRadius = 38
         $0.backgroundColor = UIColor(hexCode: "51C878")
         $0.setTitle("STOP", for: .normal)

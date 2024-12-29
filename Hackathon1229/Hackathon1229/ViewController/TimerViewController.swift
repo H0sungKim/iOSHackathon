@@ -16,6 +16,7 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         self.view = timerView
         setupDelegate()
         startTimer1()
+        stopTimer1()
     }
     
     private lazy var timerView = TimerView()
@@ -27,8 +28,13 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
     }
  
     @objc private func startTimer1() {
-        timerView.btn3.addTarget(timerView.circleTimerView, action: #selector(timerView.circleTimerView.startTimer), for: .touchUpInside)
+        timerView.btn3.addTarget(timerView.circleTimerView, action: #selector(timerView.circleTimerView.toggleTimer), for: .touchUpInside)
     }
+    
+    @objc private func stopTimer1() {
+        timerView.btn2.addTarget(timerView.circleTimerView, action: #selector(timerView.circleTimerView.realStopTimer), for: .touchUpInside)
+    }
+
 }
 
 extension TimerViewController: UICollectionViewDataSource {
