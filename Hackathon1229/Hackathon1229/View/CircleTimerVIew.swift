@@ -30,7 +30,20 @@ class CircleTimerView: UIView {
     }
     
     private var timerLabel: UILabel!
-    private lazy var btn1 = UIButton()
+    
+    private lazy var btn1 = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        
+        config.imagePadding = 7
+        $0.backgroundColor = UIColor(hexCode: "E6E6E6")
+        $0.layer.cornerRadius = 18.5
+        $0.setTitle("10:00", for: .normal)
+        $0.setImage(UIImage(resource: .vector), for: .normal)
+        $0.setTitleColor(UIColor(hexCode: "797979"), for: .normal)
+        
+        $0.configuration = config
+    }
+    
     private var duration: TimeInterval = 60 // 타이머 총 시간 (초)
     private var displayLink: CADisplayLink?
     private var remainingTime: TimeInterval = 0
@@ -65,6 +78,13 @@ class CircleTimerView: UIView {
         timerLabel.textColor = UIColor(hexCode: "414E2E")
         timerLabel.text = formatTime(from: remainingTime)
         addSubview(timerLabel)
+        
+        btn1.snp.makeConstraints{
+            $0.top.equalTo(subjectLabel.snp.bottom).offset(72)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(97)
+            $0.height.equalTo(37)
+        }
 
         // 핸들(작은 원 버튼)
         handleView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: 21))
