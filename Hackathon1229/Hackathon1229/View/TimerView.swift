@@ -36,6 +36,19 @@ class TimerView: UIView {
         $0.textColor = UIColor(hexCode: "9A9A9A")
     }
     
+    private lazy var btn1 = UIButton().then {
+        $0.layer.cornerRadius = 38
+        $0.backgroundColor = UIColor(hexCode: "")
+    }
+    
+    private lazy var btn2 = UIButton().then {
+        
+    }
+    
+    private lazy var btn3 = UIButton().then {
+        
+    }
+    
     private var shapeLayer: CAShapeLayer!
     private var backgroundLayer: CAShapeLayer!
     private var handleView: UIView!
