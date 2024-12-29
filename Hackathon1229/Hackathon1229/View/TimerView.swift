@@ -30,7 +30,7 @@ class TimerView: UIView {
         
         config.imagePadding = 7
         $0.setTitle("이전", for: .normal)
-        $0.setImage(UIImage(resource: .back), for: .normal)
+        $0.setImage(UIImage(resource: .before), for: .normal)
         $0.setTitleColor(UIColor(hexCode: "9A9A9A"), for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
