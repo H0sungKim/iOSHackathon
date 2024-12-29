@@ -416,7 +416,7 @@ class ChartView: UIView {
         return label
     }()
     
-    private lazy var btnSubject: UIButton = {
+    public lazy var btnSubject: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(resource: .down)

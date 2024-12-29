@@ -85,6 +85,10 @@ class ChartViewController: UIViewController {
         chartView.cvTotalStudy.delegate = greenCollcetionViewHandler
         
         chartView.cvStudyChart.dataSource = chartCollectionViewHandler
+        chartView.btnSubject.showsMenuAsPrimaryAction = true
+        chartView.btnSubject.menu = UIMenu(title: "과목을 골라주세요.", identifier: nil, options: .displayInline, children: [
+            UIAction(title: "전체보기", handler: {_ in}),
+        ])
         
         return chartView
     }()
