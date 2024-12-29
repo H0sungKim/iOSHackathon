@@ -37,7 +37,6 @@ class ChartView: UIView {
         self.addSubview(totalStudyView)
         self.addSubview(studyChartView)
         
-        navigationBarView.addSubview(btnBack)
         navigationBarView.addSubview(lbTitle)
         navigationBarView.addSubview(btnShare)
         
@@ -77,11 +76,6 @@ class ChartView: UIView {
             make.height.equalTo(64)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide)
-        })
-        
-        btnBack.snp.makeConstraints({ make in
-            make.leading.equalToSuperview().inset(32)
-            make.centerY.equalToSuperview()
         })
         
         lbTitle.snp.makeConstraints({ make in
@@ -256,22 +250,6 @@ class ChartView: UIView {
     private lazy var navigationBarView: UIView = {
         let view = UIView()
         return view
-    }()
-    
-    private lazy var btnBack: UIButton = {
-        let button = UIButton()
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(resource: .before)
-        configuration.imagePlacement = .leading
-        configuration.imagePadding = 7
-        
-        var container = AttributeContainer()
-        container.font = UIFont.systemFont(ofSize: 16)
-        container.foregroundColor = UIColor(hexCode: "#9A9A9A")
-        configuration.attributedTitle = AttributedString("이전", attributes: container)
-        
-        button.configuration = configuration
-        return button
     }()
     
     private lazy var lbTitle: UILabel = {
