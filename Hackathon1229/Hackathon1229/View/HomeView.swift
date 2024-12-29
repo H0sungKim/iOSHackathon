@@ -20,11 +20,14 @@ class HomeView: UIView {
     
     let topView = TopView(main: "목표 시간까지 40분!🔥", sub: "조금 더 집중해볼까요?")
     
-    private lazy var studyStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.distribution = .fill
-        $0.alignment = .center
-        $0.spacing = 13
+    let studyCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.estimatedItemSize = .init(width: 346, height: 71)
+        $0.minimumInteritemSpacing = 13
+    }).then {
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = true
+        $0.showsVerticalScrollIndicator = false
+        $0.register(SubjectTimerCollectionViewCell.self, forCellWithReuseIdentifier: SubjectTimerCollectionViewCell.identifier)
     }
     
     let plus = SubjectPlusView()
@@ -40,7 +43,7 @@ class HomeView: UIView {
     private func setupView() {
         [
             topView,
-            studyStackView,
+            studyCollectionView,
             plus,
             continueBtn,
         ].forEach {
@@ -48,17 +51,19 @@ class HomeView: UIView {
         }
         
         topView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(87)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(60)
             $0.centerX.equalToSuperview()
         }
         
-        studyStackView.snp.makeConstraints {
+        studyCollectionView.snp.makeConstraints {
             $0.top.equalTo(topView.snp.bottom).offset(75)
             $0.centerX.equalToSuperview()
+            $0.width.equalTo(346)
+            $0.height.equalTo(320)
         }
         
         plus.snp.makeConstraints {
-            $0.top.equalTo(studyStackView.snp.bottom).offset(17)
+            $0.top.equalTo(studyCollectionView.snp.bottom).offset(17)
             $0.leading.equalToSuperview().offset(46)
         }
         
