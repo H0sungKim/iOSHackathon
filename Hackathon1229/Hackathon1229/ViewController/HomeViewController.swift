@@ -73,8 +73,23 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         self.newSubject = subject // 전달받은 데이터 저장
         print("새로운 과목 추가됨: \(subject.title), \(subject.time)")
         self.subjects.append(subject)
-        // 새로운 데이터를 컬렉션 뷰에 반영
         homeView.studyCollectionView.reloadData()
+    }
+    
+    @objc private func deleteButtonTapped(_ sender: UIButton) {
+        let index = sender.tag
+        guard subjects.indices.contains(index) else { return }
+        subjects.remove(at: index)
+        homeView.studyCollectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+        
+        if subjects.isEmpty {
+            homeView.studyCollectionView.reloadData()
+        } else {
+            homeView.studyCollectionView.performBatchUpdates {
+            let indexPaths = subjects.enumerated().map { IndexPath(item: $0.offset, section: 0) }
+                homeView.studyCollectionView.reloadItems(at: indexPaths)
+            }
+        }
     }
 }
 
@@ -94,6 +109,9 @@ extension HomeViewController: UICollectionViewDataSource {
         let subject = subjects[indexPath.row]
         cell.title.text = subject.title
         cell.time.text = subject.time
+        
+        cell.deleteBtn.tag = indexPath.row
+        cell.deleteBtn.addTarget(self, action: #selector(deleteButtonTapped(_:)), for: .touchUpInside)
         
         switch indexPath.item % 4 {
         case 0:
