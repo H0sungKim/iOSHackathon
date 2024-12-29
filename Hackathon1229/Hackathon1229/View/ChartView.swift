@@ -78,5 +78,5 @@ class ChartView: UIView {
         return view
     }()
     
-    private
+    //private
 }

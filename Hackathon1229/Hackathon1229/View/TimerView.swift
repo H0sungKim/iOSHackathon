@@ -37,116 +37,45 @@ class TimerView: UIView {
     }
     
     private lazy var btn1 = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        
+        config.imagePadding = 7
         $0.layer.cornerRadius = 38
         $0.backgroundColor = UIColor(hexCode: "E6E6E7")
         $0.setImage(UIImage(resource: .plus), for: .normal)
         $0.setTitle("10:00", for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        $0.setTitleColor(UIColor(hexCode: "797979"), for: .normal)
+        
+        $0.configuration = config
     }
     
     private lazy var btn2 = UIButton().then {
         $0.layer.cornerRadius = 38
         $0.backgroundColor = UIColor(hexCode: "51C878")
         $0.setTitle("STOP", for: .normal)
-        $0.textColor(
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 21, weight: .bold)
+        $0.setTitleColor(UIColor.white, for: .normal)
+    }
+    
+    private lazy var stopImage1 = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
+    private lazy var stopImage2 = UIView().then {
+        $0.backgroundColor = .white
     }
     
     private lazy var btn3 = UIButton().then {
-        
+        $0.layer.cornerRadius = 38
+        $0.backgroundColor = UIColor(hexCode: "51C878")
     }
     
-    private var shapeLayer: CAShapeLayer!
-    private var backgroundLayer: CAShapeLayer!
-    private var handleView: UIView!
-    private var subjectLabel: UILabel!
-    private var timerLabel: UILabel!
-    private var duration: TimeInterval = 60 // 타이머의 총 시간 (초)
     
-    private func setupView() {
-        // 배경 원형 레이어
-        backgroundLayer = CAShapeLayer()
-        backgroundLayer.path = circularPath().cgPath
-        backgroundLayer.strokeColor = UIColor.lightGray.cgColor
-        backgroundLayer.lineWidth = 10
-        backgroundLayer.fillColor = UIColor.clear.cgColor
-        layer.addSublayer(backgroundLayer)
-           
-        // 타이머 원형 레이어
-        shapeLayer = CAShapeLayer()
-        shapeLayer.path = circularPath().cgPath
-        shapeLayer.strokeColor = UIColor.green.cgColor
-        shapeLayer.lineWidth = 10
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineCap = .round
-        shapeLayer.strokeEnd = 0
-        layer.addSublayer(shapeLayer)
-           
-        
-        // 타이머 라벨
-        timerLabel = UILabel()
-        timerLabel.textAlignment = .center
-        timerLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        timerLabel.text = "\(Int(duration))"
-        timerLabel.frame = bounds
-        addSubview(timerLabel)
-           
-        // 핸들(작은 원 버튼)
-        handleView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        handleView.backgroundColor = UIColor.white
-        handleView.layer.cornerRadius = 10
-        handleView.center = pointOnCircle(at: 0)
-        addSubview(handleView)
-       }
-
-    private func circularPath() -> UIBezierPath {
-            return UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
-                                radius: bounds.width / 2 - 10,
-                                startAngle: -CGFloat.pi / 2,
-                                endAngle: 3 * CGFloat.pi / 2,
-                                clockwise: true)
-    }
-    
-    private func pointOnCircle(at progress: CGFloat) -> CGPoint {
-           let angle = -CGFloat.pi / 2 + progress * 2 * CGFloat.pi
-           let radius = bounds.width / 2 - 10
-           let center = CGPoint(x: bounds.midX, y: bounds.midY)
-           return CGPoint(x: center.x + radius * cos(angle), y: center.y + radius * sin(angle))
-    }
-    
-    func startTimer() {
-        // 원형 테두리 애니메이션
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.toValue = 1
-        animation.duration = duration
-        animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = false
-        shapeLayer.add(animation, forKey: "circleAnimation")
-        
-        // 핸들 움직임 애니메이션
-        let displayLink = CADisplayLink(target: self, selector: #selector(updateHandlePosition))
-        displayLink.add(to: .main, forMode: .default)
-        
-        // 타이머 카운트다운
-        var remainingTime = duration
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            remainingTime -= 1
-            self.timerLabel.text = "\(Int(remainingTime))"
-            
-            if remainingTime <= 0 {
-                timer.invalidate()
-            }
-        }
-    }
-    
-    @objc private func updateHandlePosition() {
-        let presentationLayer = shapeLayer.presentation()
-        let strokeEnd = presentationLayer?.strokeEnd ?? 0
-        handleView.center = pointOnCircle(at: CGFloat(strokeEnd))
-    }
     
     private func addComponents() {
         [
-            timerTitle, backBtn, progressTitle, btn1, btn2, btn3
+            timerTitle, backBtn, progressTitle, btn1, btn2, btn3, stopImage1, stopImage2
         ].forEach{
             addSubview($0)
         }
@@ -177,6 +106,20 @@ class TimerView: UIView {
             $0.right.equalTo(btn3.snp.left).offset(-8)
             $0.height.width.equalTo(76)
             $0.top.equalTo(progressTitle.snp.bottom).offset(400)
+        }
+        
+        stopImage1.snp.makeConstraints{
+            $0.width.equalTo(6)
+            $0.height.equalTo(18)
+            $0.top.equalTo(btn3.snp.top).offset(29)
+            $0.left.equalTo(btn3.snp.left).offset(29)
+        }
+        
+        stopImage2.snp.makeConstraints{
+            $0.width.equalTo(6)
+            $0.height.equalTo(18)
+            $0.top.equalTo(btn3.snp.top).offset(29)
+            $0.left.equalTo(stopImage1.snp.right).offset(5)
         }
         
         btn3.snp.makeConstraints{
