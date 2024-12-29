@@ -59,7 +59,7 @@ class HomeView: UIView {
             $0.top.equalTo(topView.snp.bottom).offset(50)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(346)
-            $0.height.equalTo(300)
+            $0.height.equalTo(340)
         }
         
         plus.snp.makeConstraints {
