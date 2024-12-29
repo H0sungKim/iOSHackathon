@@ -77,6 +77,7 @@ class ChartViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         chartView.cvStudyChart.reloadData()
+        chartView.lbTargettime.text = UserDefaultManager.shared.getGoal(date: CalendarManager.shared.toString(date: date))
     }
     
     private lazy var chartView: ChartView = {
