@@ -13,9 +13,6 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupView()
-        self.main.backgroundColor = UIColor(hexCode: "#CCE9CC")
-        self.bar.backgroundColor = UIColor(hexCode: "#97B697")
-        self.restTime.layer.borderColor = UIColor(hexCode: "#CCE9CC").cgColor
     }
         
     required init?(coder: NSCoder) {
@@ -30,8 +27,9 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
 
     lazy var title = UILabel().then {
         $0.textColor = .black
-        $0.textAlignment = .center
+        $0.textAlignment = .left
         $0.font = .systemFont(ofSize: 18, weight: .medium)
+        $0.lineBreakMode = .byTruncatingTail
     }
     
     lazy var time = UILabel().then {
@@ -53,9 +51,16 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
         $0.font = .systemFont(ofSize: 14, weight: .regular)
     }
     
+    lazy var deleteBtn = UIButton().then {
+        $0.setTitle("x", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+    }
+    
     private func setupView() {
         addSubview(main)
         main.addSubview(bar)
+        main.addSubview(deleteBtn)
         main.addSubview(title)
         main.addSubview(time)
         main.addSubview(restTime)
@@ -74,9 +79,15 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(42)
         }
         
+        deleteBtn.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(5)
+            $0.trailing.equalToSuperview().offset(-5)
+        }
+        
         title.snp.makeConstraints {
             $0.leading.equalTo(bar.snp.trailing).offset(42)
             $0.centerY.equalToSuperview()
+            $0.width.equalTo(200)
         }
         
         time.snp.makeConstraints {
