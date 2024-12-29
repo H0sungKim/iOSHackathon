@@ -13,6 +13,7 @@ class ChartViewController: UIViewController {
         super.viewDidLoad()
 
         self.view = chartView
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     private lazy var chartView: ChartView = {
