@@ -36,7 +36,7 @@ class ChartCollectionViewCell: UICollectionViewCell {
         
         lbTime.snp.makeConstraints({ make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.width.equalTo(18)
+            make.height.width.equalTo(32)
         })
         
         chartView.snp.makeConstraints({ make in
@@ -48,8 +48,8 @@ class ChartCollectionViewCell: UICollectionViewCell {
         lbStudyTime.snp.makeConstraints({ make in
             make.bottom.equalTo(chartView.snp.top).offset(2)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.width.equalTo(18)
+            
+            make.height.width.equalTo(32)
         })
     }
     
@@ -74,17 +74,20 @@ class ChartCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = UIColor(hexCode: "#797979")
+        label.textAlignment = .center
         return label
     }()
     
-    func initializeCell(time: Int) {
+    func initializeCell(index: Int, time: Int) {
+        lbStudyTime.text = "\(time)"
+        lbTime.text = "\(index)시"
         self.time = time
         chartView.snp.remakeConstraints({ make in
-            make.bottom.equalTo(lbTime.snp.top).offset(7)
+            make.bottom.equalTo(lbTime.snp.top).offset(-7)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(time * 2)
+            make.height.equalTo(126 * time / 60)
         })
-        fillColor(greenEnum: .dark)
+        index%2 == 0 ? fillColor(greenEnum: .light) : fillColor(greenEnum: .dark)
     }
     
     private func fillColor(greenEnum: GreenEnum) {
