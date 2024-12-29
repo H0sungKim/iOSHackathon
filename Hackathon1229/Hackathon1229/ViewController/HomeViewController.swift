@@ -88,6 +88,35 @@ extension HomeViewController: UICollectionViewDataSource {
         cell.title.text = subject.title
         cell.time.text = subject.time
         
+        switch indexPath.item % 4 {
+        case 0:
+            cell.main.backgroundColor = UIColor(hexCode: "#CCE9CC")
+            cell.bar.backgroundColor = UIColor(hexCode: "#97B697")
+            cell.restTime.layer.borderColor = UIColor(hexCode: "#CCE9CC").cgColor
+        case 1:
+            cell.main.backgroundColor = UIColor(hexCode: "#FFCAD5")
+            cell.bar.backgroundColor = UIColor(hexCode: "#C78D97")
+            cell.restTime.layer.borderColor = UIColor(hexCode: "#FFCAD5").cgColor
+        case 2:
+            cell.main.backgroundColor = UIColor(hexCode: "#BEE5FB")
+            cell.bar.backgroundColor = UIColor(hexCode: "#85ACC2")
+            cell.restTime.layer.borderColor = UIColor(hexCode: "#BEE5FB").cgColor
+        case 3:
+            cell.main.backgroundColor = UIColor(hexCode: "#FDE7AE")
+            cell.bar.backgroundColor = UIColor(hexCode: "#CFBB87")
+            cell.restTime.layer.borderColor = UIColor(hexCode: "#FDE7AE").cgColor
+        default:
+            cell.main.backgroundColor = UIColor(hexCode: "#CCE9CC")
+            cell.bar.backgroundColor = UIColor(hexCode: "#97B697")
+            cell.restTime.layer.borderColor = UIColor(hexCode: "#CCE9CC").cgColor
+        }
+        
+        if indexPath.item == subjects.count - 1 {
+            cell.restTime.isHidden = true
+        } else {
+            cell.restTime.isHidden = false
+        }
+        
         return cell
     }
     
