@@ -8,8 +8,7 @@
 import UIKit
 
 class BaseViewController: UITabBarController {
-    
-    private let homeViewController = UINavigationController(rootViewController: HomeViewController())
+    private let navigationViewController = UINavigationController(rootViewController: AddStudyTimeViewController())
     private let timerViewController = UINavigationController(rootViewController: TimerViewController())
     private let chartViewController = UINavigationController(rootViewController: ChartViewController())
     private let myViewController = UINavigationController(rootViewController: MyViewController())
@@ -20,7 +19,7 @@ class BaseViewController: UITabBarController {
         view.backgroundColor = .white
         
         self.viewControllers = [
-            homeViewController,
+            navigationViewController,
             timerViewController,
             chartViewController,
             myViewController,
@@ -34,7 +33,7 @@ class BaseViewController: UITabBarController {
         
         self.tabBar.tintColor = .black
         
-        homeViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(resource: .home), tag: 0)
+        navigationViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(resource: .home), tag: 0)
         timerViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(resource: .timer), tag: 1)
         chartViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(resource: .barChartFill), tag: 2)
         myViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(resource: .person), tag: 3)

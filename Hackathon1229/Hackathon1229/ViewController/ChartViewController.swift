@@ -62,6 +62,7 @@ class ChartViewController: UIViewController {
     private let greenCollcetionViewHandler: GreenCollectionViewHandler = GreenCollectionViewHandler()
     private let chartCollectionViewHandler: ChartCollectionViewHandler = ChartCollectionViewHandler()
     
+    private var date: Date = Date()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +86,25 @@ class ChartViewController: UIViewController {
         chartView.cvTotalStudy.delegate = greenCollcetionViewHandler
         
         chartView.cvStudyChart.dataSource = chartCollectionViewHandler
-        
+        chartView.btnSubject.showsMenuAsPrimaryAction = true
+        chartView.lbDay.text = CalendarManager.shared.toString(date: date)
+        chartView.btnSubject.menu = UIMenu(title: "과목을 골라주세요.", identifier: nil, options: .displayInline, children: [
+            UIAction(title: "전체보기", handler: {_ in}),
+        ])
+        chartView.btnDayBefore.addTarget(self, action: #selector(onClickDayBefore), for: .touchUpInside)
+        chartView.btnDayAfter.addTarget(self, action: #selector(onClickDayAfter), for: .touchUpInside)
         return chartView
     }()
+    
+    @objc func onClickDayBefore() {
+        guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return }
+        date = yesterday
+        chartView.lbDay.text = CalendarManager.shared.toString(date: date)
+    }
+    
+    @objc func onClickDayAfter() {
+        guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return }
+        date = tomorrow
+        chartView.lbDay.text = CalendarManager.shared.toString(date: date)
+    }
 }
