@@ -42,12 +42,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         let view = HomeView()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goModal))
         view.plus.addGestureRecognizer(tapGesture)
+        view.continueBtn.addTarget(self, action: #selector(goTimer), for: .touchUpInside)
         return view
     }()
     
     private func setupDataSource() {
         homeView.studyCollectionView.delegate = self
         homeView.studyCollectionView.dataSource = self
+    }
+    
+    @objc private func goTimer() {
+        if let tabBarController = self.tabBarController {
+            tabBarController.selectedIndex = 1
+        }
     }
     
     @objc private func goModal() {
