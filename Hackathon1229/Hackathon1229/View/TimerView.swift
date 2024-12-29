@@ -26,8 +26,15 @@ class TimerView: UIView {
     }
     
     private lazy var backBtn = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        
+        config.imagePadding = 7
         $0.setTitle("이전", for: .normal)
-        $0.setImage(UIImage(resource: .vector17), for: .normal)
+        $0.setImage(UIImage(resource: .back), for: .normal)
+        $0.setTitleColor(UIColor(hexCode: "9A9A9A"), for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        
+        $0.configuration = config
     }
     
     private lazy var progressTitle = UILabel().then {
@@ -58,24 +65,36 @@ class TimerView: UIView {
         $0.setTitleColor(UIColor.white, for: .normal)
     }
     
-    private lazy var stopImage1 = UIView().then {
+    lazy var stopImage1 = UIView().then {
         $0.backgroundColor = .white
+        $0.isUserInteractionEnabled = false
     }
     
-    private lazy var stopImage2 = UIView().then {
+    lazy var stopImage2 = UIView().then {
         $0.backgroundColor = .white
+        $0.isUserInteractionEnabled = false
+        
     }
     
-    private lazy var btn3 = UIButton().then {
+    lazy var btn3 = UIButton().then {
         $0.layer.cornerRadius = 38
         $0.backgroundColor = UIColor(hexCode: "51C878")
     }
     
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.itemSize = CGSize(width: 134, height: 83)
+        $0.scrollDirection = .horizontal
+        $0.minimumInteritemSpacing = 8
+    }).then {
+        $0.isScrollEnabled = true
+        $0.register(timerViewCell.self, forCellWithReuseIdentifier: timerViewCell.identifier)
+    }
     
+    public lazy var circleTimerView = CircleTimerView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
     
     private func addComponents() {
         [
-            timerTitle, backBtn, progressTitle, btn1, btn2, btn3, stopImage1, stopImage2
+            timerTitle, backBtn, progressTitle, btn1, btn2, btn3, stopImage1, stopImage2, collectionView, circleTimerView
         ].forEach{
             addSubview($0)
         }
@@ -87,12 +106,18 @@ class TimerView: UIView {
         
         backBtn.snp.makeConstraints{
             $0.top.equalToSuperview().inset(80)
-            $0.left.equalToSuperview().inset(34)
+            $0.left.equalToSuperview().inset(30)
         }
         
         progressTitle.snp.makeConstraints{
             $0.top.equalTo(timerTitle.snp.bottom).offset(17)
             $0.centerX.equalToSuperview()
+        }
+        
+        circleTimerView.snp.makeConstraints{
+            $0.top.equalTo(progressTitle.snp.bottom).offset(89)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(300)
         }
         
         btn1.snp.makeConstraints{
@@ -126,6 +151,13 @@ class TimerView: UIView {
             $0.right.equalToSuperview().inset(40)
             $0.height.width.equalTo(76)
             $0.top.equalTo(progressTitle.snp.bottom).offset(400)
+        }
+        
+        collectionView.snp.makeConstraints{
+            $0.left.equalToSuperview().inset(24)
+            $0.top.equalTo(btn3.snp.bottom).offset(82)
+            $0.height.equalTo(90)
+            $0.right.equalToSuperview()
         }
     }
 }
