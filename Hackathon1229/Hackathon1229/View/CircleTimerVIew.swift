@@ -22,6 +22,13 @@ class CircleTimerView: UIView {
     private var shapeLayer: CAShapeLayer!
     private var backgroundLayer: CAShapeLayer!
     private var handleView: UIView!
+    
+    private var subjectLabel = UILabel().then {
+        $0.text = "국어"
+        $0.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        $0.textColor = UIColor(hexCode: "797979")
+    }
+    
     private var timerLabel: UILabel!
     private lazy var btn1 = UIButton()
     private var duration: TimeInterval = 60 // 타이머 총 시간 (초)
@@ -32,18 +39,24 @@ class CircleTimerView: UIView {
         // 배경 원형 레이어
         backgroundLayer = CAShapeLayer()
         backgroundLayer.strokeColor = UIColor.lightGray.cgColor
-        backgroundLayer.lineWidth = 10
+        backgroundLayer.lineWidth = 14
         backgroundLayer.fillColor = UIColor.clear.cgColor
         layer.addSublayer(backgroundLayer)
 
         // 타이머 원형 레이어
         shapeLayer = CAShapeLayer()
-        shapeLayer.strokeColor = UIColor.green.cgColor
-        shapeLayer.lineWidth = 10
+        shapeLayer.strokeColor = UIColor(hexCode: "01D281").cgColor
+        shapeLayer.lineWidth = 14
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineCap = .round
         shapeLayer.strokeEnd = 0
         layer.addSublayer(shapeLayer)
+        
+        addSubview(subjectLabel)
+        subjectLabel.snp.makeConstraints{
+            $0.top.equalToSuperview().inset(90)
+            $0.centerX.equalToSuperview()
+        }
 
         // 타이머 라벨
         timerLabel = UILabel()
@@ -54,7 +67,7 @@ class CircleTimerView: UIView {
         addSubview(timerLabel)
 
         // 핸들(작은 원 버튼)
-        handleView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        handleView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: 21))
         handleView.backgroundColor = UIColor.white
         handleView.layer.cornerRadius = 10
         addSubview(handleView)
@@ -89,62 +102,6 @@ class CircleTimerView: UIView {
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
         return CGPoint(x: center.x + radius * cos(angle), y: center.y + radius * sin(angle))
     }
-
-    var set = 1 //1이면 실행, 0이면 중지
-    
-    /*@objc func startTimer() {
-        // 이미 실행 중인 경우 실행하지 않음
-        if timer != nil && timer?.isValid == true {
-            print("Timer is already running") // 디버깅 로그
-            return
-        }
-
-        print("Start timer called") // 디버깅 로그
-
-        // 현재 진행 상태 확인
-        let currentStrokeEnd: CGFloat = shapeLayer.presentation()?.strokeEnd ?? shapeLayer.strokeEnd
-        let remainingDuration = remainingTime > 0 ? remainingTime : duration * (1.0 - Double(currentStrokeEnd))
-        
-        // 초기 상태 설정
-        shapeLayer.strokeEnd = currentStrokeEnd
-        remainingTime = remainingDuration
-        timerLabel.text = formatTime(from: remainingTime)
-
-        // 기존 애니메이션과 타이머 초기화
-        timer?.invalidate()
-        displayLink?.invalidate()
-
-        // 새로운 애니메이션 설정
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = currentStrokeEnd // 현재 상태에서 시작
-        animation.toValue = 1.0
-        animation.duration = remainingDuration
-        animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = false
-        shapeLayer.add(animation, forKey: "circleAnimation")
-        print("Animation added. From: \(currentStrokeEnd), Duration: \(animation.duration)") // 디버깅 로그
-
-        // 핸들 동기화 애니메이션
-        displayLink = CADisplayLink(target: self, selector: #selector(updateHandlePosition))
-        displayLink?.add(to: .main, forMode: .default)
-
-        // 타이머 카운트다운
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            self.remainingTime -= 1
-            self.timerLabel.text = self.formatTime(from: self.remainingTime)
-
-            if self.remainingTime <= 0 {
-                timer.invalidate()
-                self.displayLink?.invalidate()
-                self.shapeLayer.strokeEnd = 1.0
-                print("Timer ended") // 디버깅 로그
-            }
-        }
-    }*/
     
     var isRunning = false
     

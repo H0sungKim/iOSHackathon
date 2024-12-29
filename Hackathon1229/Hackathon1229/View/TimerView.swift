@@ -19,22 +19,15 @@ class TimerView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private lazy var scrollView = UIScrollView().then {
+        $0.showsHorizontalScrollIndicator = false
+        $0.showsVerticalScrollIndicator = true
+    }
 
     private lazy var timerTitle = UILabel().then {
         $0.text = "타이머"
         $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-    }
-    
-    private lazy var backBtn = UIButton().then {
-        var config = UIButton.Configuration.plain()
-        
-        config.imagePadding = 7
-        $0.setTitle("이전", for: .normal)
-        $0.setImage(UIImage(resource: .back), for: .normal)
-        $0.setTitleColor(UIColor(hexCode: "9A9A9A"), for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        
-        $0.configuration = config
     }
     
     private lazy var progressTitle = UILabel().then {
@@ -91,22 +84,32 @@ class TimerView: UIView {
     }
     
     public lazy var circleTimerView = CircleTimerView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+    lazy var contentView = UIView()
     
     private func addComponents() {
+        self.addSubview(scrollView)
+        
+        scrollView.snp.makeConstraints{
+            $0.edges.equalToSuperview()
+        }
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.snp.makeConstraints{
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView.snp.width) // 가로 스크롤을 방지하고 스크롤뷰와 같은 너비로 설정
+            $0.height.equalTo(800)
+        }
+        
         [
-            timerTitle, backBtn, progressTitle, btn1, btn2, btn3, stopImage1, stopImage2, collectionView, circleTimerView
+            timerTitle, progressTitle, btn1, btn2, btn3, stopImage1, stopImage2, collectionView, circleTimerView
         ].forEach{
-            addSubview($0)
+            contentView.addSubview($0)
         }
         
         timerTitle.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(78)
-        }
-        
-        backBtn.snp.makeConstraints{
-            $0.top.equalToSuperview().inset(80)
-            $0.left.equalToSuperview().inset(30)
+            $0.top.equalToSuperview()
         }
         
         progressTitle.snp.makeConstraints{
