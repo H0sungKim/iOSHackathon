@@ -6,6 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		96F6BA532D20E4140022EB14 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 96F6BA522D20E4140022EB14 /* SnapKit */; };
+		96F6BA562D20E42E0022EB14 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96F6BA552D20E42E0022EB14 /* CombineMoya */; };
+		96F6BA582D20E42E0022EB14 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96F6BA572D20E42E0022EB14 /* Moya */; };
+		96F6BA5A2D20E42E0022EB14 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96F6BA592D20E42E0022EB14 /* ReactiveMoya */; };
+		96F6BA5C2D20E42E0022EB14 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96F6BA5B2D20E42E0022EB14 /* RxMoya */; };
+		96F6BA5F2D20E4540022EB14 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 96F6BA5E2D20E4540022EB14 /* Then */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		96F6B87C2D20DC740022EB14 /* Hackathon1229.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hackathon1229.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +45,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96F6BA5C2D20E42E0022EB14 /* RxMoya in Frameworks */,
+				96F6BA5F2D20E4540022EB14 /* Then in Frameworks */,
+				96F6BA562D20E42E0022EB14 /* CombineMoya in Frameworks */,
+				96F6BA5A2D20E42E0022EB14 /* ReactiveMoya in Frameworks */,
+				96F6BA532D20E4140022EB14 /* SnapKit in Frameworks */,
+				96F6BA582D20E42E0022EB14 /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +93,12 @@
 			);
 			name = Hackathon1229;
 			packageProductDependencies = (
+				96F6BA522D20E4140022EB14 /* SnapKit */,
+				96F6BA552D20E42E0022EB14 /* CombineMoya */,
+				96F6BA572D20E42E0022EB14 /* Moya */,
+				96F6BA592D20E42E0022EB14 /* ReactiveMoya */,
+				96F6BA5B2D20E42E0022EB14 /* RxMoya */,
+				96F6BA5E2D20E4540022EB14 /* Then */,
 			);
 			productName = Hackathon1229;
 			productReference = 96F6B87C2D20DC740022EB14 /* Hackathon1229.app */;
@@ -107,6 +128,11 @@
 			);
 			mainGroup = 96F6B8732D20DC740022EB14;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				96F6BA512D20E4140022EB14 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				96F6BA542D20E42E0022EB14 /* XCRemoteSwiftPackageReference "Moya" */,
+				96F6BA5D2D20E4540022EB14 /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 96F6B87D2D20DC740022EB14 /* Products */;
 			projectDirPath = "";
@@ -333,6 +359,66 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		96F6BA512D20E4140022EB14 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		96F6BA542D20E42E0022EB14 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		96F6BA5D2D20E4540022EB14 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		96F6BA522D20E4140022EB14 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F6BA512D20E4140022EB14 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		96F6BA552D20E42E0022EB14 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F6BA542D20E42E0022EB14 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		96F6BA572D20E42E0022EB14 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F6BA542D20E42E0022EB14 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		96F6BA592D20E42E0022EB14 /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F6BA542D20E42E0022EB14 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
+		96F6BA5B2D20E42E0022EB14 /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F6BA542D20E42E0022EB14 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+		96F6BA5E2D20E4540022EB14 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F6BA5D2D20E4540022EB14 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 96F6B8742D20DC740022EB14 /* Project object */;
 }
