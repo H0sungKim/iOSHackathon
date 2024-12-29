@@ -58,54 +58,34 @@ extension MonthEnum: Month {
 }
 
 class ChartViewController: UIViewController {
+    
+    private let greenCollcetionViewHandler: GreenCollectionViewHandler = GreenCollectionViewHandler()
+    private let chartCollectionViewHandler: ChartCollectionViewHandler = ChartCollectionViewHandler()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view = chartView
         navigationController?.setNavigationBarHidden(true, animated: false)
+        greenCollcetionViewHandler.synchronizeScroll = { [weak self] contentOffset in
+            self?.chartView.svMonth.contentOffset = contentOffset
+        }
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        chartView.cvStudyChart.reloadData()
     }
     
     private lazy var chartView: ChartView = {
         let chartView = ChartView()
         chartView.setStvMonth(monthEnum: .august)
-        chartView.cvTotalStudy.dataSource = self
-        chartView.cvTotalStudy.delegate = self
+        chartView.cvTotalStudy.dataSource = greenCollcetionViewHandler
+        chartView.cvTotalStudy.delegate = greenCollcetionViewHandler
+        
+        chartView.cvStudyChart.dataSource = chartCollectionViewHandler
+        
         return chartView
     }()
-
-    
-    private func getDaysOfYear() -> Int {
-
-        let calendar = Calendar.current
-        let currentYear = calendar.component(.year, from: Date())
-        
-        let startOfYear = calendar.date(from: DateComponents(year: currentYear, month: 1, day: 1))!
-        let endOfYear = calendar.date(from: DateComponents(year: currentYear, month: 12, day: 31))!
-        
-        let daysOfYear = calendar.dateComponents([.day], from: startOfYear, to: endOfYear).day! + 1
-
-        return daysOfYear
-    }
-    
-}
-
-extension ChartViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return getDaysOfYear()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GreenCollectionViewCell.identifier, for: indexPath) as? GreenCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        
-        
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
-    }
 }

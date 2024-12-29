@@ -12,7 +12,18 @@ class ChartView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
+        cvTotalStudy.reloadData()
         self.addComponents()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layoutIfNeeded()
+        
+        stvMonth.snp.remakeConstraints({ make in
+            make.width.equalTo(cvTotalStudy.contentSize.width)
+            make.edges.equalToSuperview()
+        })
     }
     
     required init?(coder: NSCoder) {
@@ -200,7 +211,7 @@ class ChartView: UIView {
         })
         
         stvMonth.snp.makeConstraints({ make in
-            make.width.equalTo(1272)
+            make.width.equalTo(cvTotalStudy.contentSize.width)
             make.edges.equalToSuperview()
         })
         
@@ -432,6 +443,7 @@ class ChartView: UIView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bouncesVertically = false
+        scrollView.isUserInteractionEnabled = false
         return scrollView
     }()
     
@@ -485,7 +497,7 @@ class ChartView: UIView {
         layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.register(GreenCollectionViewCell.self, forCellWithReuseIdentifier: GreenCollectionViewCell.identifier)
         
@@ -515,16 +527,15 @@ class ChartView: UIView {
     
     public lazy var cvStudyChart: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.estimatedItemSize = .init(width: 20, height: 20)
-        layout.itemSize = .init(width: 20, height: 20)
-        layout.minimumInteritemSpacing = 4
-        layout.minimumLineSpacing = 4
+        layout.estimatedItemSize = .init(width: 20, height: 167)
+        layout.itemSize = .init(width: 20, height: 167)
+        layout.minimumInteritemSpacing = 6
         layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
-        collectionView.register(GreenCollectionViewCell.self, forCellWithReuseIdentifier: GreenCollectionViewCell.identifier)
+        collectionView.register(ChartCollectionViewCell.self, forCellWithReuseIdentifier: ChartCollectionViewCell.identifier)
         
         return collectionView
     }()
