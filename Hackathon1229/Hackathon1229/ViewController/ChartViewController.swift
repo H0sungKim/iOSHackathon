@@ -93,6 +93,8 @@ class ChartViewController: UIViewController {
         ])
         chartView.btnDayBefore.addTarget(self, action: #selector(onClickDayBefore), for: .touchUpInside)
         chartView.btnDayAfter.addTarget(self, action: #selector(onClickDayAfter), for: .touchUpInside)
+        
+        chartView.lbTargettime.text = UserDefaultManager.shared.getGoal(date: CalendarManager.shared.toString(date: date))
         return chartView
     }()
     

@@ -312,7 +312,7 @@ class ChartView: UIView {
         return label
     }()
     
-    private lazy var lbTargettime: UILabel = {
+    public lazy var lbTargettime: UILabel = {
         let label = UILabel()
         label.text = "05:30:00"
         label.font = .systemFont(ofSize: 18, weight: .medium)

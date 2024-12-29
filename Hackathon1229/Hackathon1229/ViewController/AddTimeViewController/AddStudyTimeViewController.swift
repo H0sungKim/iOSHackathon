@@ -28,6 +28,9 @@ class AddStudyTimeViewController: UIViewController {
         let minutes = (Int(selectedDuration) % 3600) / 60 // 분 계산
         
         homeVC.receivedData = "\(hours)시간 \(minutes)분"
+        
+        UserDefaultManager.shared.setGoal(goal: "\(String(format: "%02d", hours)):\(String(format: "%02d", minutes)):00", date: CalendarManager.shared.toString(date: Date()))
+        
         navigationController?.pushViewController(homeVC, animated: true)
     }
 
