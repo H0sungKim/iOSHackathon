@@ -39,12 +39,15 @@ class TimerView: UIView {
     private lazy var btn1 = UIButton().then {
         $0.layer.cornerRadius = 38
         $0.backgroundColor = UIColor(hexCode: "E6E6E7")
-        $0.setImage(UIImage(resource: .plus), for: <#T##UIControl.State#>)
+        $0.setImage(UIImage(resource: .plus), for: .normal)
         $0.setTitle("10:00", for: .normal)
     }
     
     private lazy var btn2 = UIButton().then {
-        
+        $0.layer.cornerRadius = 38
+        $0.backgroundColor = UIColor(hexCode: "51C878")
+        $0.setTitle("STOP", for: .normal)
+        $0.textColor(
     }
     
     private lazy var btn3 = UIButton().then {
@@ -143,9 +146,43 @@ class TimerView: UIView {
     
     private func addComponents() {
         [
-            timerTitle, backBtn, progressTitle
+            timerTitle, backBtn, progressTitle, btn1, btn2, btn3
         ].forEach{
             addSubview($0)
+        }
+        
+        timerTitle.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(78)
+        }
+        
+        backBtn.snp.makeConstraints{
+            $0.top.equalToSuperview().inset(80)
+            $0.left.equalToSuperview().inset(34)
+        }
+        
+        progressTitle.snp.makeConstraints{
+            $0.top.equalTo(timerTitle.snp.bottom).offset(17)
+            $0.centerX.equalToSuperview()
+        }
+        
+        btn1.snp.makeConstraints{
+            $0.left.equalToSuperview().inset(24)
+            $0.height.equalTo(76)
+            $0.width.equalTo(114)
+            $0.top.equalTo(progressTitle.snp.bottom).offset(400)
+        }
+        
+        btn2.snp.makeConstraints{
+            $0.right.equalTo(btn3.snp.left).offset(-8)
+            $0.height.width.equalTo(76)
+            $0.top.equalTo(progressTitle.snp.bottom).offset(400)
+        }
+        
+        btn3.snp.makeConstraints{
+            $0.right.equalToSuperview().inset(40)
+            $0.height.width.equalTo(76)
+            $0.top.equalTo(progressTitle.snp.bottom).offset(400)
         }
     }
 }
