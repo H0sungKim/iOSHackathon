@@ -77,7 +77,7 @@ class ChartViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         chartView.cvStudyChart.reloadData()
-        chartView.lbTargettime.text = UserDefaultManager.shared.getGoal(date: CalendarManager.shared.toString(date: date))
+        chartView.lbTargettime.text = UserDefaultManager.shared.getGoal(date: CalendarManager.shared.toString(date: date)) ?? "05:30:00"
     }
     
     private lazy var chartView: ChartView = {
@@ -95,7 +95,6 @@ class ChartViewController: UIViewController {
         chartView.btnDayBefore.addTarget(self, action: #selector(onClickDayBefore), for: .touchUpInside)
         chartView.btnDayAfter.addTarget(self, action: #selector(onClickDayAfter), for: .touchUpInside)
         
-        chartView.lbTargettime.text = UserDefaultManager.shared.getGoal(date: CalendarManager.shared.toString(date: date))
         return chartView
     }()
     
