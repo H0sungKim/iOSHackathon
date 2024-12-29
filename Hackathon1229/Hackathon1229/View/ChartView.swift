@@ -527,8 +527,8 @@ class ChartView: UIView {
     
     public lazy var cvStudyChart: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.estimatedItemSize = .init(width: 20, height: 167)
-        layout.itemSize = .init(width: 20, height: 167)
+        layout.estimatedItemSize = .init(width: 32, height: 167)
+        layout.itemSize = .init(width: 32, height: 167)
         layout.minimumInteritemSpacing = 6
         layout.scrollDirection = .horizontal
         

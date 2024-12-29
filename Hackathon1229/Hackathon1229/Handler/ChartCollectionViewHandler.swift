@@ -19,7 +19,7 @@ class ChartCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollec
             return UICollectionViewCell()
         }
         
-        cell.initializeCell(time: indexPath.row * 3)
+        cell.initializeCell(index: indexPath.row, time: indexPath.row * 2)
         
         return cell
     }
