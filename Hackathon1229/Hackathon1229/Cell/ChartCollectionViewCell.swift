@@ -87,7 +87,7 @@ class ChartCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(126 * time / 60)
         })
-        fillColor(greenEnum: .dark)
+        index%2 == 0 ? fillColor(greenEnum: .light) : fillColor(greenEnum: .dark)
     }
     
     private func fillColor(greenEnum: GreenEnum) {

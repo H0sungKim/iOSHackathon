@@ -294,13 +294,13 @@ class ChartView: UIView {
         return view
     }()
     
-    private lazy var btnDayBefore: UIButton = {
+    public lazy var btnDayBefore: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(resource: .before), for: .normal)
         return button
     }()
     
-    private lazy var lbDay: UILabel = {
+    public lazy var lbDay: UILabel = {
         let label = UILabel()
         label.text = "12월 25일 수요일"
         label.font = .systemFont(ofSize: 15)
@@ -308,7 +308,7 @@ class ChartView: UIView {
         return label
     }()
     
-    private lazy var btnDayAfter: UIButton = {
+    public lazy var btnDayAfter: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(resource: .after), for: .normal)
         return button
