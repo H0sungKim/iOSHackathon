@@ -10,6 +10,9 @@ import Then
 
 class TimerViewController: UIViewController, UICollectionViewDelegate {
 
+    private var subject: String!
+    private var duration: Int!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -17,10 +20,22 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         setupDelegate()
         startTimer1()
         stopTimer1()
+        
+        timerView.circleTimerView.subjectLabel.text = subject
+        timerView.circleTimerView.duration = TimeInterval(duration)
+    }
+    
+    init(subject: String, time: Int) {
+        super.init(nibName: nil, bundle: nil)
+        self.subject = subject
+        self.duration = time
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private lazy var timerView = TimerView()
-    private lazy var circleTimerView = CircleTimerView()
   
     private func setupDelegate() {
         timerView.collectionView.dataSource = self

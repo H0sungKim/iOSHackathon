@@ -25,11 +25,13 @@ class CircleTimerView: UIView {
     private var backgroundLayer: CAShapeLayer!
     private var handleView: UIView!
     
-    private var subjectLabel = UILabel().then {
-        $0.text = "국어"
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-        $0.textColor = UIColor(hexCode: "797979")
-    }
+    public var subjectLabel: UILabel = {
+        let label = UILabel()
+        label.text = "sample"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.textColor = UIColor(hexCode: "797979")
+        return label
+    }()
     
     private var timerLabel: UILabel!
     
@@ -46,7 +48,7 @@ class CircleTimerView: UIView {
         $0.configuration = config
     }
     
-    private var duration: TimeInterval = 60 // 타이머 총 시간 (초)
+    public var duration: TimeInterval = 60 // 타이머 총 시간 (초)
     private var displayLink: CADisplayLink?
     private var remainingTime: TimeInterval = 0
 
@@ -66,12 +68,6 @@ class CircleTimerView: UIView {
         shapeLayer.lineCap = .round
         shapeLayer.strokeEnd = 0
         layer.addSublayer(shapeLayer)
-        
-        addSubview(subjectLabel)
-        subjectLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().inset(90)
-            $0.centerX.equalToSuperview()
-        }
 
         // 타이머 라벨
         timerLabel = UILabel()
@@ -80,6 +76,12 @@ class CircleTimerView: UIView {
         timerLabel.textColor = UIColor(hexCode: "414E2E")
         timerLabel.text = formatTime(from: remainingTime)
         addSubview(timerLabel)
+        
+        addSubview(subjectLabel)
+        subjectLabel.snp.makeConstraints{
+            $0.top.equalTo(timerLabel.snp.top).offset(85)
+            $0.centerX.equalToSuperview()
+        }
         
         addSubview(btn1)
         btn1.snp.makeConstraints{

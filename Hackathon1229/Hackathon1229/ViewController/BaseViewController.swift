@@ -9,7 +9,7 @@ import UIKit
 
 class BaseViewController: UITabBarController {
     private let navigationViewController = UINavigationController(rootViewController: AddStudyTimeViewController())
-    private let timerViewController = UINavigationController(rootViewController: TimerViewController())
+    private let timerViewController = UINavigationController(rootViewController: TimerPageViewController())
     private let chartViewController = UINavigationController(rootViewController: ChartViewController())
     private let myViewController = UINavigationController(rootViewController: MyViewController())
     
