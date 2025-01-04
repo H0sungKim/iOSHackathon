@@ -171,7 +171,7 @@ class ChartView: UIView {
         })
         
         totalStudyView.snp.makeConstraints({ make in
-            make.height.equalTo(266)
+            make.height.equalTo(280)
             make.leading.trailing.equalToSuperview().inset(24)
             make.top.equalTo(timeView.snp.bottom).offset(10)
         })

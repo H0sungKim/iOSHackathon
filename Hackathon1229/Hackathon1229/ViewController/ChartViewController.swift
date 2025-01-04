@@ -82,7 +82,7 @@ class ChartViewController: UIViewController {
     
     private lazy var chartView: ChartView = {
         let chartView = ChartView()
-        chartView.setStvMonth(monthEnum: .august)
+        chartView.setStvMonth(monthEnum: .january)
         chartView.cvTotalStudy.dataSource = greenCollcetionViewHandler
         chartView.cvTotalStudy.delegate = greenCollcetionViewHandler
         
