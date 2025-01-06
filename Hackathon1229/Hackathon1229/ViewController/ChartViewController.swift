@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 protocol Month {
     var name: String { get }
@@ -61,6 +62,7 @@ class ChartViewController: UIViewController {
     
     private let greenCollcetionViewHandler: GreenCollectionViewHandler = GreenCollectionViewHandler()
     private let chartCollectionViewHandler: ChartCollectionViewHandler = ChartCollectionViewHandler()
+    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
     
     private var date: Date = Date()
 
@@ -73,6 +75,23 @@ class ChartViewController: UIViewController {
             self?.chartView.svMonth.contentOffset = contentOffset
         }
         
+        CommonRepository.shared.getStatistics(date: CalendarManager.shared.toStringForAPI(date: date))
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+                self.applyStatistics(statResponse: result.result)
+            })
+            .store(in: &cancellable)
+        
+    }
+    
+    func applyStatistics(statResponse: StatResponse) {
+        self.chartView.updateView(statResponse: statResponse)
+        self.greenCollcetionViewHandler.statResponse = statResponse
+        self.chartCollectionViewHandler.statResponse = statResponse
+        self.chartView.cvTotalStudy.reloadData()
+        self.chartView.cvStudyChart.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,11 +121,27 @@ class ChartViewController: UIViewController {
         guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return }
         date = yesterday
         chartView.lbDay.text = CalendarManager.shared.toString(date: date)
+        CommonRepository.shared.getStatistics(date: CalendarManager.shared.toStringForAPI(date: date))
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+                self.applyStatistics(statResponse: result.result)
+            })
+            .store(in: &cancellable)
     }
     
     @objc func onClickDayAfter() {
         guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return }
         date = tomorrow
         chartView.lbDay.text = CalendarManager.shared.toString(date: date)
+        CommonRepository.shared.getStatistics(date: CalendarManager.shared.toStringForAPI(date: date))
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+                self.applyStatistics(statResponse: result.result)
+            })
+            .store(in: &cancellable)
     }
 }

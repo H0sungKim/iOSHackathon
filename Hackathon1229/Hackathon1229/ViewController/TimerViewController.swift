@@ -7,17 +7,21 @@
 
 import UIKit
 import Then
+import Combine
 
 class TimerViewController: UIViewController, UICollectionViewDelegate {
 
     private var subject: String!
     private var duration: Int!
     
+    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    
+    private var timerResponse: TimerResponse!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view = timerView
-        setupDelegate()
         startTimer1()
         stopTimer1()
         
@@ -29,6 +33,16 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         timerView.circleTimerView.index = index
         self.subject = subject
         self.duration = time
+        print(index)
+        CommonRepository.shared.getTimer(subjectId: index)
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                self.timerResponse = result.result
+                self.setupDelegate()
+                print(result)
+            })
+            .store(in: &cancellable)
     }
     
     required init?(coder: NSCoder) {
@@ -54,7 +68,7 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
 
 extension TimerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return timerModel.dummy().count
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -64,10 +78,25 @@ extension TimerViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
         }
         
-        let list = timerModel.dummy()
-                
-        cell.text1.text = list[indexPath.row].text1
-        cell.text2.text = list[indexPath.row].text2
+        switch indexPath.row {
+        case 0:
+            if let goalTime = timerResponse.goalTime {
+                cell.text1.text = "오늘 목표 시간"
+                cell.text2.text = "\(goalTime/60):\(goalTime%60):00"
+            }
+        case 1:
+            if let totalStudyTime = timerResponse.totalStudyTime {
+                cell.text1.text = "총 공부 시간"
+                cell.text2.text = "\(totalStudyTime/60):\(totalStudyTime%60):00"
+            }
+        case 2:
+            if let subjectGoalTime = timerResponse.subjectGoalTime {
+                cell.text1.text = "\(subject!) 목표 시간"
+                cell.text2.text = "\(subjectGoalTime/60):\(subjectGoalTime%60):00"
+            }
+        default:
+            break
+        }
         
         return cell
     }

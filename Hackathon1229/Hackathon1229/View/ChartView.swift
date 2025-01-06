@@ -517,4 +517,19 @@ class ChartView: UIView {
         
         return collectionView
     }()
+    
+    func updateView(statResponse: StatResponse) {
+        var menu: [UIAction] = [
+            UIAction(title: "전체보기", handler: {_ in}),
+        ]
+        for keyword in statResponse.allKeywords {
+            menu.append(UIAction(title: keyword, handler: {_ in}))
+        }
+        btnSubject.menu = UIMenu(title: "과목을 골라주세요.", identifier: nil, options: .displayInline, children: menu)
+        let goalTime: Int = statResponse.goalTime ?? 0
+        let totalStudyTime: Int = statResponse.totalStudyTime ?? 0
+        lbTargettime.text = "\(goalTime/60):\(goalTime%60):00"
+        lbStudytime.text = "\(totalStudyTime/60):\(totalStudyTime%60):00"
+        lbTargettime.text = "\(totalStudyTime/goalTime*100)%"
+    }
 }

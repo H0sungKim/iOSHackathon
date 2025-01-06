@@ -14,6 +14,11 @@ enum CommonRestAPI {
     case stopTimer(subjectId: Int, param: TimerRequest)
     case pauseTimer(subjectId: Int, param: TimerRequest)
     case getSubjects
+    case getTimer(subjectId: Int)
+    case setGoalForDuplication(param: GoalRequest)
+    case deleteSubject(subjectId: Int)
+    case getStatistics(date: String)
+    case getStatisticsSubject(date: String, keywordId: Int)
 }
 
 extension CommonRestAPI: TargetType {
@@ -23,7 +28,7 @@ extension CommonRestAPI: TargetType {
     
     var path: String {
         switch self {
-        case .setGoal:
+        case .setGoal, .setGoalForDuplication:
             return "/home/set"
         case .setSubjectGoal:
             return "/home/lists/add"
@@ -33,6 +38,14 @@ extension CommonRestAPI: TargetType {
             return "/timer/\(subjectId)/pause"
         case .getSubjects:
             return "/home/lists"
+        case .getTimer(let subjectId):
+            return "/timer/\(subjectId)"
+        case .deleteSubject(let subjectId):
+            return "/home/lists/add/\(subjectId)"
+        case .getStatistics(let date):
+            return "/stat/\(date)"
+        case .getStatisticsSubject(let date, let keywordId):
+            return "/stat/\(date)/\(keywordId)"
         }
     }
     
@@ -40,8 +53,12 @@ extension CommonRestAPI: TargetType {
         switch self {
         case .setGoal, .setSubjectGoal, .stopTimer, .pauseTimer:
             return .post
-        case .getSubjects:
+        case .getSubjects, .getTimer, .getStatistics, .getStatisticsSubject:
             return .get
+        case .setGoalForDuplication:
+            return .patch
+        case .deleteSubject:
+            return .delete
         }
     }
     
@@ -55,14 +72,16 @@ extension CommonRestAPI: TargetType {
             return .requestJSONEncodable(param)
         case .stopTimer(let subjectId, let param):
             return .requestJSONEncodable(param)
-        case .getSubjects:
+        case .setGoalForDuplication(let param):
+            return .requestJSONEncodable(param)
+        case .getSubjects, .getTimer, .deleteSubject, .getStatistics, .getStatisticsSubject:
             return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects:
+        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .setGoalForDuplication, .deleteSubject, .getStatisticsSubject, .getStatistics:
             return ["Content-Type": "application/json"]
         }
     }

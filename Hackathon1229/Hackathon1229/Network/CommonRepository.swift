@@ -56,4 +56,44 @@ class CommonRepository {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
+    func getTimer(subjectId: Int) -> AnyPublisher<DefaultResponse<TimerResponse>, MoyaError> {
+        return provider.requestPublisher(.getTimer(subjectId: subjectId))
+            .map(DefaultResponse<TimerResponse>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func setGoalForDuplication(goalRequest: GoalRequest) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
+        return provider.requestPublisher(.setGoalForDuplication(param: goalRequest))
+            .map(DefaultResponse<String>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteSubject(subjectId: Int) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
+        return provider.requestPublisher(.deleteSubject(subjectId: subjectId))
+            .map(DefaultResponse<String>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func getStatistics(date: String) -> AnyPublisher<DefaultResponse<StatResponse>, MoyaError> {
+        return provider.requestPublisher(.getStatistics(date: date))
+            .map(DefaultResponse<StatResponse>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func getStatisticsSubject(date: String, keywordId: Int) -> AnyPublisher<DefaultResponse<StatResponse>, MoyaError> {
+        return provider.requestPublisher(.getStatisticsSubject(date: date, keywordId: keywordId))
+            .map(DefaultResponse<StatResponse>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }

@@ -36,8 +36,21 @@ class AddStudyTimeViewController: UIViewController {
         CommonRepository.shared.setGoal(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
             .sink(receiveCompletion: { error in
                 print(error)
+                CommonRepository.shared.setGoalForDuplication(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
+                    .sink(receiveCompletion: { error in
+                        print(error)
+                    }, receiveValue: { result in
+                        print(result)
+                    })
             }, receiveValue: { result in
-                print(result)
+                if !result.isSuccess {
+                    CommonRepository.shared.setGoalForDuplication(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
+                        .sink(receiveCompletion: { error in
+                            print(error)
+                        }, receiveValue: { result in
+                            print(result)
+                        })
+                }
             })
             .store(in: &cancellable)
         

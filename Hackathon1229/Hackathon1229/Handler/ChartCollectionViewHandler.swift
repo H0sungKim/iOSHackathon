@@ -10,6 +10,8 @@ import UIKit
 
 class ChartCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    var statResponse: StatResponse?
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 24
     }
@@ -19,7 +21,13 @@ class ChartCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollec
             return UICollectionViewCell()
         }
         
-        cell.initializeCell(index: indexPath.row, time: indexPath.row * 2)
+        if let statResponse = statResponse {
+            for hourlyStudyTimesByDate in statResponse.hourlyStudyTimesByDate {
+                if hourlyStudyTimesByDate.hour == indexPath.row {
+                    cell.initializeCell(index: indexPath.row, time: hourlyStudyTimesByDate.studyTime)
+                }
+            }
+        }
         
         return cell
     }

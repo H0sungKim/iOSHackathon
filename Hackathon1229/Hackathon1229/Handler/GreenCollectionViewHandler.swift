@@ -10,6 +10,8 @@ import UIKit
 
 class GreenCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    var statResponse: StatResponse?
+    
     var synchronizeScroll: ((CGPoint) -> Void)?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -21,12 +23,19 @@ class GreenCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollec
             return UICollectionViewCell()
         }
         
-        if indexPath.row == 3 {
-            cell.fill(color: .dark)
-        }
-        
-        if indexPath.row == 10 {
-            cell.fill(color: .light)
+        if let statResponse = statResponse {
+            for dateInfo in statResponse.allDateInfoList {
+                guard let totalStudyTime = dateInfo.totalStudyTime else { continue }
+                if CalendarManager.shared.indexOfYear(from: dateInfo.date) == indexPath.row+1 {
+                    if totalStudyTime == 0 {
+                        cell.fill(color: .none)
+                    } else if totalStudyTime < 60 {
+                        cell.fill(color: .light)
+                    } else {
+                        cell.fill(color: .dark)
+                    }
+                }
+            }
         }
         
         return cell

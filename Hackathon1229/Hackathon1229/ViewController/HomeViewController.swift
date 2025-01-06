@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPresentationControllerDelegate, AddSubjectViewControllerDelegate {
     
+    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
     public var receivedData: String?
     
     var newSubject: SubjectModel?
@@ -22,8 +24,20 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         super.viewDidLoad()
         self.view = homeView
         self.navigationController?.isNavigationBarHidden = true
-        setupDataSource()
-        updateTopView()
+        CommonRepository.shared.getSubjects()
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                self.subjects = []
+                for subjectGoalResponse in result.result {
+                    self.subjects.append(SubjectModel(title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분"))
+                    self.setupDataSource()
+                    self.updateTopView()
+                }
+                
+            })
+            .store(in: &cancellable)
+        
     }
     
     private func updateTopView() {
@@ -90,6 +104,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
                 homeView.studyCollectionView.reloadItems(at: indexPaths)
             }
         }
+        CommonRepository.shared.deleteSubject(subjectId: index)
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+            })
+            .store(in: &cancellable)
     }
 }
 
@@ -144,6 +165,4 @@ extension HomeViewController: UICollectionViewDataSource {
         
         return cell
     }
-    
-    
 }
