@@ -163,7 +163,13 @@ class CircleTimerView: UIView {
 
 
     private func startTimer() {
-        
+        CommonRepository.shared.startTimer(subjectId: index)
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+            })
+            .store(in: &cancellable)
         startTime = CalendarManager.shared.getISO8601DateFormatter()
         print("Start timer called") // 디버깅 로그
         isRunning = true // 상태 변경

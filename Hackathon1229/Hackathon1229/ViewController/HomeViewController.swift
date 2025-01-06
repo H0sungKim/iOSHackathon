@@ -28,10 +28,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
             .sink(receiveCompletion: { error in
                 print(error)
             }, receiveValue: { result in
+                print(result)
                 self.subjects = []
                 for subjectGoalResponse in result.result {
                     self.subjects.append(SubjectModel(title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분"))
-                    self.setupDataSource()
+                    self.homeView.studyCollectionView.reloadData()
                     self.updateTopView()
                 }
                 
@@ -72,6 +73,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
     }
     
     @objc private func goModal() {
+        print("gomodal")
         let addSubjectVC = AddSubjectViewController()
         addSubjectVC.delegate = self // Delegate 연결
         addSubjectVC.modalPresentationStyle = .pageSheet

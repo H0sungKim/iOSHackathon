@@ -29,7 +29,7 @@ class GreenCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollec
                 if CalendarManager.shared.indexOfYear(from: dateInfo.date) == indexPath.row+1 {
                     if totalStudyTime == 0 {
                         cell.fill(color: .none)
-                    } else if totalStudyTime < 60 {
+                    } else if totalStudyTime < 90 {
                         cell.fill(color: .light)
                     } else {
                         cell.fill(color: .dark)

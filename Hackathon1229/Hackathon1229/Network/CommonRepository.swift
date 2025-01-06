@@ -96,4 +96,20 @@ class CommonRepository {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
+    func getRecommendedKeywords(userInput: String) -> AnyPublisher<DefaultResponse<[String]>, MoyaError> {
+        return provider.requestPublisher(.getRecommendedKeywords(userInput: userInput))
+            .map(DefaultResponse<[String]>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func startTimer(subjectId: Int) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
+        return provider.requestPublisher(.startTimer(subjectId: subjectId))
+            .map(DefaultResponse<String>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }

@@ -17,16 +17,33 @@ class AddSubjectViewController: UIViewController {
     private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
     weak var delegate: AddSubjectViewControllerDelegate?
     
+    private(set) var textFieldEvent = PassthroughSubject<String, Never>()
+    
     var newSubject: SubjectModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = addSubjectView
+        
+        textFieldEvent
+            .debounce(for: 1, scheduler: RunLoop.main)
+            .sink(receiveValue: { text in
+                CommonRepository.shared.getRecommendedKeywords(userInput: text)
+                    .debounce(for: 1, scheduler: RunLoop.main)
+                    .sink(receiveCompletion: { error in
+                        print(error)
+                    }, receiveValue: { result in
+                        print(result.result)
+                    })
+                    .store(in: &self.cancellable)
+            })
+            .store(in: &cancellable)
     }
     
     private lazy var addSubjectView: AddSubjectView = {
         let view = AddSubjectView()
         view.addBtn.addTarget(self, action: #selector(btnDidTap), for: .touchUpInside)
+        view.titleTextField.delegate = self
         return view
     }()
     
@@ -46,4 +63,17 @@ class AddSubjectViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
+}
+
+
+extension AddSubjectViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let currentText = textField.text ?? ""
+        if let textRange = Range(range, in: currentText) {
+            let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+            textFieldEvent.send(updatedText)
+        }
+        return true
+    }
 }

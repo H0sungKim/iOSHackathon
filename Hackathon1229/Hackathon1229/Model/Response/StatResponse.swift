@@ -11,7 +11,7 @@ struct StatResponse: Codable {
     let allKeywords: [String]
     let date: String
     let goalTime: Int?
-    let totalStudyTime: Int?
+    let totalStudyTime: Float?
     let hourlyStudyTimesByDate: [HourlyStudyTimesByDate]
     struct HourlyStudyTimesByDate: Codable {
         let hour: Int
@@ -20,6 +20,6 @@ struct StatResponse: Codable {
     let allDateInfoList: [AllDateInfoList]
     struct AllDateInfoList: Codable {
         let date: String
-        let totalStudyTime: Int?
+        let totalStudyTime: Float?
     }
 }

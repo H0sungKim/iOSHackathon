@@ -19,6 +19,8 @@ enum CommonRestAPI {
     case deleteSubject(subjectId: Int)
     case getStatistics(date: String)
     case getStatisticsSubject(date: String, keywordId: Int)
+    case getRecommendedKeywords(userInput: String)
+    case startTimer(subjectId: Int)
 }
 
 extension CommonRestAPI: TargetType {
@@ -46,14 +48,18 @@ extension CommonRestAPI: TargetType {
             return "/stat/\(date)"
         case .getStatisticsSubject(let date, let keywordId):
             return "/stat/\(date)/\(keywordId)"
+        case .getRecommendedKeywords:
+            return "/home/lists/add"
+        case .startTimer(let subjectId):
+            return "/timer/\(subjectId)/start"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .setGoal, .setSubjectGoal, .stopTimer, .pauseTimer:
+        case .setGoal, .setSubjectGoal, .stopTimer, .pauseTimer, .startTimer:
             return .post
-        case .getSubjects, .getTimer, .getStatistics, .getStatisticsSubject:
+        case .getSubjects, .getTimer, .getStatistics, .getStatisticsSubject, .getRecommendedKeywords:
             return .get
         case .setGoalForDuplication:
             return .patch
@@ -74,14 +80,16 @@ extension CommonRestAPI: TargetType {
             return .requestJSONEncodable(param)
         case .setGoalForDuplication(let param):
             return .requestJSONEncodable(param)
-        case .getSubjects, .getTimer, .deleteSubject, .getStatistics, .getStatisticsSubject:
+        case .getRecommendedKeywords(let userInput):
+            return .requestParameters(parameters: ["userInput": userInput], encoding: URLEncoding.default)
+        case .getSubjects, .getTimer, .deleteSubject, .getStatistics, .getStatisticsSubject, .startTimer:
             return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .setGoalForDuplication, .deleteSubject, .getStatisticsSubject, .getStatistics:
+        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .setGoalForDuplication, .deleteSubject, .getStatisticsSubject, .getStatistics, .getRecommendedKeywords, .startTimer:
             return ["Content-Type": "application/json"]
         }
     }

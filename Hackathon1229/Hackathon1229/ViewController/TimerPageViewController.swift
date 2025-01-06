@@ -25,6 +25,7 @@ class TimerPageViewController: UIViewController {
             .sink(receiveCompletion: { error in
                 print(error)
             }, receiveValue: { [weak self] result in
+                print(result.result)
                 self?.timerViewControllers = []
                 for index in 0..<result.result.count {
                     let subjectGoalResponse = result.result[index]

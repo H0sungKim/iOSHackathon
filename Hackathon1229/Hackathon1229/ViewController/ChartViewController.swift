@@ -74,7 +74,7 @@ class ChartViewController: UIViewController {
         greenCollcetionViewHandler.synchronizeScroll = { [weak self] contentOffset in
             self?.chartView.svMonth.contentOffset = contentOffset
         }
-        
+        print(CalendarManager.shared.toStringForAPI(date: date))
         CommonRepository.shared.getStatistics(date: CalendarManager.shared.toStringForAPI(date: date))
             .sink(receiveCompletion: { error in
                 print(error)
