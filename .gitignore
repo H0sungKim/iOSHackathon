@@ -5,6 +5,8 @@
 ## User settings
 xcuserdata/
 
+Secret.plist
+
 *.DS_Store
 
 ## Obj-C/Swift specific
