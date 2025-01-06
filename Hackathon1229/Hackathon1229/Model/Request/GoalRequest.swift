@@ -8,6 +8,6 @@
 import Foundation
 
 struct GoalRequest: Codable {
-    let goal_hour: Int
-    let subject_goal_minute: Int
+    let goalHour: Int
+    let goalMinute: Int
 }

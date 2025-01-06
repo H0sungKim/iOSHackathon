@@ -8,29 +8,40 @@
 import Foundation
 import UIKit
 import SnapKit
+import Combine
 
 class TimerPageViewController: UIViewController {
     
     private var timerViewControllers: [UIViewController]!
+    
+    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
     
     private lazy var pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        timerViewControllers = [
-            TimerViewController(subject: "국어", time: 60),
-            TimerViewController(subject: "수학", time: 600),
-        ]
+        CommonRepository.shared.getSubjects()
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { [weak self] result in
+                self?.timerViewControllers = []
+                for index in 0..<result.result.count {
+                    let subjectGoalResponse = result.result[index]
+                    self?.timerViewControllers.append(TimerViewController(index: index,subject: subjectGoalResponse.subjectName, time: subjectGoalResponse.goalTime*60))
+                }
+                if let firstViewController = self?.timerViewControllers.first {
+                    self?.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+                }
+            })
+            .store(in: &cancellable)
+        
+        
         
         pageViewController.delegate = self
         pageViewController.dataSource = self
         
         addComponents()
-        
-        if let firstViewController = timerViewControllers.first {
-            pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
-        }
     }
     
     

@@ -155,5 +155,10 @@ class TimerView: UIView {
             $0.right.equalToSuperview()
         }
     }
+    
+    func updateView(subject: String, duration: Int) {
+        circleTimerView.subjectLabel.text = subject
+        circleTimerView.duration = TimeInterval(duration)
+    }
 }
 

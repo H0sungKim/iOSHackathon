@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 class AddStudyTimeViewController: UIViewController {
+    
+    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +33,13 @@ class AddStudyTimeViewController: UIViewController {
         homeVC.receivedData = "\(hours)시간 \(minutes)분"
         
         UserDefaultManager.shared.setGoal(goal: "\(String(format: "%02d", hours)):\(String(format: "%02d", minutes)):00", date: CalendarManager.shared.toString(date: Date()))
+        CommonRepository.shared.setGoal(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+            })
+            .store(in: &cancellable)
         
         navigationController?.pushViewController(homeVC, animated: true)
     }

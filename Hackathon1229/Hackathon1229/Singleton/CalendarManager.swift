@@ -31,4 +31,15 @@ class CalendarManager {
         formatter.dateFormat = "M월 d일 EEEE"
         return formatter.string(from: date)
     }
+    
+    func getISO8601DateFormatter() -> String {
+        let now = Date()
+
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.timeZone = TimeZone(secondsFromGMT: 9)
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        let isoDateString = isoFormatter.string(from: now)
+        return isoDateString
+    }
 }

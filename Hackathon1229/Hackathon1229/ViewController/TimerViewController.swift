@@ -21,12 +21,12 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         startTimer1()
         stopTimer1()
         
-        timerView.circleTimerView.subjectLabel.text = subject
-        timerView.circleTimerView.duration = TimeInterval(duration)
+        timerView.updateView(subject: subject, duration: duration)
     }
     
-    init(subject: String, time: Int) {
+    init(index: Int, subject: String, time: Int) {
         super.init(nibName: nil, bundle: nil)
+        timerView.circleTimerView.index = index
         self.subject = subject
         self.duration = time
     }

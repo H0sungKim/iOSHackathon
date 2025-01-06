@@ -6,8 +6,16 @@
 //
 
 import UIKit
+import Combine
 
 class CircleTimerView: UIView {
+    
+    var index: Int!
+    
+    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    
+    private var startTime: String?
+    private var endTime: String?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,8 +25,6 @@ class CircleTimerView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    lazy var timerView = TimerView()
     
     private var timer: Timer?
     private var shapeLayer: CAShapeLayer!
@@ -33,7 +39,7 @@ class CircleTimerView: UIView {
         return label
     }()
     
-    private var timerLabel: UILabel!
+    public var timerLabel: UILabel!
     
     private lazy var btn1 = UIButton().then {
         var config = UIButton.Configuration.plain()
@@ -48,7 +54,11 @@ class CircleTimerView: UIView {
         $0.configuration = config
     }
     
-    public var duration: TimeInterval = 60 // 타이머 총 시간 (초)
+    public var duration: TimeInterval = 60 {
+        didSet {
+            timerLabel.text = formatTime(from: duration)
+        }
+    } // 타이머 총 시간 (초)
     private var displayLink: CADisplayLink?
     private var remainingTime: TimeInterval = 0
 
@@ -74,7 +84,7 @@ class CircleTimerView: UIView {
         timerLabel.textAlignment = .center
         timerLabel.font = UIFont.systemFont(ofSize: 40, weight: .regular)
         timerLabel.textColor = UIColor(hexCode: "414E2E")
-        timerLabel.text = formatTime(from: remainingTime)
+        timerLabel.text = formatTime(from: duration)
         addSubview(timerLabel)
         
         addSubview(subjectLabel)
@@ -153,6 +163,8 @@ class CircleTimerView: UIView {
 
 
     private func startTimer() {
+        
+        startTime = CalendarManager.shared.getISO8601DateFormatter()
         print("Start timer called") // 디버깅 로그
         isRunning = true // 상태 변경
 
@@ -193,7 +205,7 @@ class CircleTimerView: UIView {
             self.timerLabel.text = self.formatTime(from: self.remainingTime)
 
             if self.remainingTime <= 0 {
-                self.stopTimer() // 타이머 완료 시 정지
+                self.realStopTimer() // 타이머 완료 시 정지
                 print("Timer ended") // 디버깅 로그
             }
         }
@@ -224,6 +236,18 @@ class CircleTimerView: UIView {
 
         // UI 갱신
         timerLabel.text = formatTime(from: remainingTime)
+        endTime = CalendarManager.shared.getISO8601DateFormatter()
+        CommonRepository.shared.pauseTimer(subjectId: index, param: TimerRequest(startTime: startTime!, endTime: endTime!))
+            .throttle(for: 1, scheduler: RunLoop.main, latest: true)
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(self.index)
+                print(self.startTime)
+                print(self.endTime)
+                print("success")
+            })
+            .store(in: &cancellable)
     }
     
     @objc func realStopTimer() {
@@ -251,6 +275,17 @@ class CircleTimerView: UIView {
         // 실행 상태 초기화
         isRunning = false
         print("Timer reset to initial state") // 디버깅 로그
+        endTime = CalendarManager.shared.getISO8601DateFormatter()
+        CommonRepository.shared.stopTimer(subjectId: index, param: TimerRequest(startTime: startTime!, endTime: endTime!))
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(self.index)
+                print(self.startTime)
+                print(self.endTime)
+                print("success")
+            })
+            .store(in: &cancellable)
     }
     
 
