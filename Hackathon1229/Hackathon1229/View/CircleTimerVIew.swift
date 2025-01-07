@@ -17,6 +17,8 @@ class CircleTimerView: UIView {
     private var startTime: String?
     private var endTime: String?
     
+    var presentAlert: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -251,7 +253,9 @@ class CircleTimerView: UIView {
                 print(self.index)
                 print(self.startTime)
                 print(self.endTime)
-                print("success")
+                if result.code == "DATEPLAN4003" {
+                    self.presentAlert?()
+                }
             })
             .store(in: &cancellable)
     }
@@ -289,7 +293,9 @@ class CircleTimerView: UIView {
                 print(self.index)
                 print(self.startTime)
                 print(self.endTime)
-                print("success")
+                if result.code == "DATEPLAN4003" {
+                    self.presentAlert?()
+                }
             })
             .store(in: &cancellable)
     }

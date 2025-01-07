@@ -28,11 +28,19 @@ class AddSubjectViewController: UIViewController {
         textFieldEvent
             .debounce(for: 1, scheduler: RunLoop.main)
             .sink(receiveValue: { text in
+                print(text)
+                self.addSubjectView.stvRecommendedKeyword.arrangedSubviews.forEach { $0.removeFromSuperview() }
+                
                 CommonRepository.shared.getRecommendedKeywords(userInput: text)
-                    .debounce(for: 1, scheduler: RunLoop.main)
                     .sink(receiveCompletion: { error in
                         print(error)
                     }, receiveValue: { result in
+                        result.result.forEach({
+                            let label = UILabel()
+                            label.backgroundColor = .white
+                            label.text = $0
+                            self.addSubjectView.stvRecommendedKeyword.addArrangedSubview(label)
+                        })
                         print(result.result)
                     })
                     .store(in: &self.cancellable)
@@ -43,9 +51,13 @@ class AddSubjectViewController: UIViewController {
     private lazy var addSubjectView: AddSubjectView = {
         let view = AddSubjectView()
         view.addBtn.addTarget(self, action: #selector(btnDidTap), for: .touchUpInside)
-        view.titleTextField.delegate = self
+        view.titleTextField.addTarget(self, action: #selector(textFieldDidChanged(sender:)), for: .editingChanged)
         return view
     }()
+    
+    @objc private func textFieldDidChanged(sender: UITextField) {
+        textFieldEvent.send(sender.text ?? "")
+    }
     
     @objc private func btnDidTap() {
         let selectedDuration = addSubjectView.timePicker.countDownDuration // 초 단위로 반환
@@ -63,17 +75,4 @@ class AddSubjectViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-}
-
-
-extension AddSubjectViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        let currentText = textField.text ?? ""
-        if let textRange = Range(range, in: currentText) {
-            let updatedText = currentText.replacingCharacters(in: textRange, with: string)
-            textFieldEvent.send(updatedText)
-        }
-        return true
-    }
 }

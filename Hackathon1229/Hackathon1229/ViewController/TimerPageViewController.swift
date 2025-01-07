@@ -23,6 +23,7 @@ class TimerPageViewController: UIViewController {
         
         CommonRepository.shared.getSubjects()
             .sink(receiveCompletion: { error in
+                print("getsubjects")
                 print(error)
             }, receiveValue: { [weak self] result in
                 print(result.result)

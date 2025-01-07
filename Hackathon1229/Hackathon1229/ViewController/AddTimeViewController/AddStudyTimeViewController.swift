@@ -35,9 +35,11 @@ class AddStudyTimeViewController: UIViewController {
         UserDefaultManager.shared.setGoal(goal: "\(String(format: "%02d", hours)):\(String(format: "%02d", minutes)):00", date: CalendarManager.shared.toString(date: Date()))
         CommonRepository.shared.setGoal(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
             .sink(receiveCompletion: { error in
+                print("setgoal")
                 print(error)
                 CommonRepository.shared.setGoalForDuplication(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
                     .sink(receiveCompletion: { error in
+                        print("setgoalforduplication")
                         print(error)
                     }, receiveValue: { result in
                         print(result)
@@ -46,6 +48,7 @@ class AddStudyTimeViewController: UIViewController {
                 if !result.isSuccess {
                     CommonRepository.shared.setGoalForDuplication(goalRequest: GoalRequest(goalHour: hours, goalMinute: minutes))
                         .sink(receiveCompletion: { error in
+                            print("setgoalforduplication")
                             print(error)
                         }, receiveValue: { result in
                             print(result)

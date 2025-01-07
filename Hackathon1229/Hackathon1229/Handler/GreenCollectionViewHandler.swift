@@ -22,7 +22,7 @@ class GreenCollectionViewHandler: NSObject, UICollectionViewDataSource, UICollec
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GreenCollectionViewCell.identifier, for: indexPath) as? GreenCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
+        cell.fill(color: .none)
         if let statResponse = statResponse {
             for dateInfo in statResponse.allDateInfoList {
                 guard let totalStudyTime = dateInfo.totalStudyTime else { continue }

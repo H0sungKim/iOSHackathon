@@ -36,7 +36,7 @@ class TimerView: UIView {
         $0.textColor = UIColor(hexCode: "9A9A9A")
     }
     
-    private lazy var btn1 = UIButton().then {
+    public lazy var btn1 = UIButton().then {
         var config = UIButton.Configuration.plain()
         
         config.imagePadding = 7

@@ -26,6 +26,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         self.navigationController?.isNavigationBarHidden = true
         CommonRepository.shared.getSubjects()
             .sink(receiveCompletion: { error in
+                print("getsubjects")
                 print(error)
             }, receiveValue: { result in
                 print(result)
@@ -108,6 +109,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         }
         CommonRepository.shared.deleteSubject(subjectId: index)
             .sink(receiveCompletion: { error in
+                print("deletesubejct")
                 print(error)
             }, receiveValue: { result in
                 print(result)

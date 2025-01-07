@@ -39,6 +39,20 @@ class AddSubjectView: UIView {
         $0.leftViewMode = .always
     }
     
+    public lazy var stvRecommendedKeyword: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.backgroundColor = .white
+        
+        stackView.layer.shadowColor = UIColor.black.cgColor  // 그림자 색상
+        stackView.layer.shadowOpacity = 0.1                 // 그림자 불투명도 (0.0 - 1.0)
+        stackView.layer.shadowOffset = CGSize(width: 0, height: 0) // 그림자 오프셋 (x, y)
+        stackView.layer.shadowRadius = 5                     // 그림자 블러 반경
+        return stackView
+    }()
+    
     private lazy var timeSetting = UILabel().then {
         $0.text = "목표 공부시간 설정"
         $0.textColor = .black
@@ -66,6 +80,7 @@ class AddSubjectView: UIView {
             timeSetting,
             timePicker,
             addBtn,
+            stvRecommendedKeyword,
         ].forEach {
             addSubview($0)
         }
@@ -80,6 +95,12 @@ class AddSubjectView: UIView {
             $0.centerX.equalToSuperview()
             $0.width.equalTo(300)
             $0.height.equalTo(44)
+        }
+        
+        stvRecommendedKeyword.snp.makeConstraints {
+            $0.top.equalTo(titleTextField.snp.bottom)
+            $0.leading.equalTo(titleTextField.snp.leading)
+            $0.trailing.equalTo(titleTextField.snp.trailing)
         }
         
         timeSetting.snp.makeConstraints {

@@ -41,17 +41,17 @@ class CommonRepository {
             .eraseToAnyPublisher()
     }
     
-    func stopTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<NilResponse, MoyaError> {
+    func stopTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
         return provider.requestPublisher(.stopTimer(subjectId: subjectId, param: param))
-            .map(NilResponse.self)
+            .map(DefaultResponse<String>.self)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
-    func pauseTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<NilResponse, MoyaError> {
+    func pauseTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
         return provider.requestPublisher(.pauseTimer(subjectId: subjectId, param: param))
-            .map(NilResponse.self)
+            .map(DefaultResponse<String>.self)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

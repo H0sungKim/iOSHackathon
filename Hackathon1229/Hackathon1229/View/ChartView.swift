@@ -530,6 +530,6 @@ class ChartView: UIView {
         let totalStudyTime: Int = Int(statResponse.totalStudyTime ?? 0)
         lbTargettime.text = "\(goalTime/60):\(goalTime%60):00"
         lbStudytime.text = "\(totalStudyTime/60):\(totalStudyTime%60):00"
-        lbTargettime.text = "\(totalStudyTime/goalTime*100)%"
+        lbAttainmentrate.text = "\(totalStudyTime*100/goalTime)%"
     }
 }

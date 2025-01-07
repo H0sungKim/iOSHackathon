@@ -26,6 +26,7 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         stopTimer1()
         
         timerView.updateView(subject: subject, duration: duration)
+        timerView.btn1.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
     }
     
     init(index: Int, subject: String, time: Int) {
@@ -33,9 +34,13 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         timerView.circleTimerView.index = index
         self.subject = subject
         self.duration = time
+        timerView.circleTimerView.presentAlert = {
+            self.presentAlert()
+        }
         print(index)
         CommonRepository.shared.getTimer(subjectId: index)
             .sink(receiveCompletion: { error in
+                print("gettimer")
                 print(error)
             }, receiveValue: { result in
                 self.timerResponse = result.result
@@ -64,6 +69,15 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         timerView.btn2.addTarget(timerView.circleTimerView, action: #selector(timerView.circleTimerView.realStopTimer), for: .touchUpInside)
     }
 
+    
+    @objc private func presentAlert() {
+        let alertDismiss: UIAlertController = UIAlertController(title: "당신을 공부의 신으로 임명합니다.", message: "연속 공부 24시간을 넘긴 자", preferredStyle: .alert)
+        let actionOk: UIAlertAction = UIAlertAction(title: "아아... 나 '강림'", style: .default, handler: { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
+        })
+        alertDismiss.addAction(actionOk)
+        self.present(alertDismiss, animated: true, completion: nil)
+    }
 }
 
 extension TimerViewController: UICollectionViewDataSource {
