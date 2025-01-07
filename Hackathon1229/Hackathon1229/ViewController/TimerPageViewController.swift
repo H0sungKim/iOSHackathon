@@ -21,6 +21,13 @@ class TimerPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pageViewController.delegate = self
+        pageViewController.dataSource = self
+        
+        addComponents()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         CommonRepository.shared.getSubjects()
             .sink(receiveCompletion: { error in
                 print("getsubjects")
@@ -28,8 +35,8 @@ class TimerPageViewController: UIViewController {
             }, receiveValue: { [weak self] result in
                 print(result.result)
                 self?.timerViewControllers = []
-                for index in 0..<result.result.count {
-                    let subjectGoalResponse = result.result[index]
+                for index in 0..<result.result.subjectPreviewDTOList.count {
+                    let subjectGoalResponse = result.result.subjectPreviewDTOList[index]
                     self?.timerViewControllers.append(TimerViewController(index: index,subject: subjectGoalResponse.subjectName, time: subjectGoalResponse.goalTime*60))
                 }
                 if let firstViewController = self?.timerViewControllers.first {
@@ -37,13 +44,6 @@ class TimerPageViewController: UIViewController {
                 }
             })
             .store(in: &cancellable)
-        
-        
-        
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
-        
-        addComponents()
     }
     
     

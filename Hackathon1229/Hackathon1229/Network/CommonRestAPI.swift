@@ -15,7 +15,6 @@ enum CommonRestAPI {
     case pauseTimer(subjectId: Int, param: TimerRequest)
     case getSubjects
     case getTimer(subjectId: Int)
-    case setGoalForDuplication(param: GoalRequest)
     case deleteSubject(subjectId: Int)
     case getStatistics(date: String)
     case getStatisticsSubject(date: String, keywordId: Int)
@@ -30,7 +29,7 @@ extension CommonRestAPI: TargetType {
     
     var path: String {
         switch self {
-        case .setGoal, .setGoalForDuplication:
+        case .setGoal:
             return "/home/set"
         case .setSubjectGoal:
             return "/home/lists/add"
@@ -43,7 +42,7 @@ extension CommonRestAPI: TargetType {
         case .getTimer(let subjectId):
             return "/timer/\(subjectId)"
         case .deleteSubject(let subjectId):
-            return "/home/lists/add/\(subjectId)"
+            return "/home/lists/\(subjectId)"
         case .getStatistics(let date):
             return "/stat/\(date)"
         case .getStatisticsSubject(let date, let keywordId):
@@ -61,10 +60,8 @@ extension CommonRestAPI: TargetType {
             return .post
         case .getSubjects, .getTimer, .getStatistics, .getStatisticsSubject, .getRecommendedKeywords:
             return .get
-        case .setGoalForDuplication:
-            return .patch
         case .deleteSubject:
-            return .delete
+            return .patch
         }
     }
     
@@ -78,8 +75,6 @@ extension CommonRestAPI: TargetType {
             return .requestJSONEncodable(param)
         case .stopTimer(let subjectId, let param):
             return .requestJSONEncodable(param)
-        case .setGoalForDuplication(let param):
-            return .requestJSONEncodable(param)
         case .getRecommendedKeywords(let userInput):
             return .requestParameters(parameters: ["userInput": userInput], encoding: URLEncoding.default)
         case .getSubjects, .getTimer, .deleteSubject, .getStatistics, .getStatisticsSubject, .startTimer:
@@ -89,7 +84,7 @@ extension CommonRestAPI: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .setGoalForDuplication, .deleteSubject, .getStatisticsSubject, .getStatistics, .getRecommendedKeywords, .startTimer:
+        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .deleteSubject, .getStatisticsSubject, .getStatistics, .getRecommendedKeywords, .startTimer:
             return ["Content-Type": "application/json"]
         }
     }

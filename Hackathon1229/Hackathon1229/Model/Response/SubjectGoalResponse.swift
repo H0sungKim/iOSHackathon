@@ -11,5 +11,6 @@ struct SubjectGoalResponse: Codable {
     let id: Int
     let subjectName: String
     let goalTime: Int
+    let remainTime: Float?
     let breakTime: Int
 }

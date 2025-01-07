@@ -33,9 +33,9 @@ class CommonRepository {
             .eraseToAnyPublisher()
     }
     
-    func getSubjects() -> AnyPublisher<DefaultMultiResponse<SubjectGoalResponse>, MoyaError> {
+    func getSubjects() -> AnyPublisher<DefaultResponse<SubjectsResponse>, MoyaError> {
         return provider.requestPublisher(.getSubjects)
-            .map(DefaultMultiResponse<SubjectGoalResponse>.self)
+            .map(DefaultResponse<SubjectsResponse>.self)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -65,13 +65,6 @@ class CommonRepository {
             .eraseToAnyPublisher()
     }
     
-    func setGoalForDuplication(goalRequest: GoalRequest) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
-        return provider.requestPublisher(.setGoalForDuplication(param: goalRequest))
-            .map(DefaultResponse<String>.self)
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
     
     func deleteSubject(subjectId: Int) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
         return provider.requestPublisher(.deleteSubject(subjectId: subjectId))

@@ -8,6 +8,7 @@
 import Foundation
 
 struct TimerResponse: Codable {
+    let remainTime: Float?
     let goalTime: Int?
     let totalStudyTime: Int?
     let subjectGoalTime: Int?

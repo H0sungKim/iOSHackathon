@@ -8,10 +8,12 @@
 import UIKit
 
 struct SubjectModel {
+    let id: Int
     let title: String
     let time: String
     
-    init(title: String, time: String) {
+    init(id: Int, title: String, time: String) {
+        self.id = id
         self.title = title
         self.time = time
     }

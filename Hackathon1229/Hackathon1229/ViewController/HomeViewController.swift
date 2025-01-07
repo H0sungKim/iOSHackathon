@@ -24,6 +24,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         super.viewDidLoad()
         self.view = homeView
         self.navigationController?.isNavigationBarHidden = true
+        setupDataSource()
         CommonRepository.shared.getSubjects()
             .sink(receiveCompletion: { error in
                 print("getsubjects")
@@ -31,10 +32,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
             }, receiveValue: { result in
                 print(result)
                 self.subjects = []
-                for subjectGoalResponse in result.result {
-                    self.subjects.append(SubjectModel(title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분"))
-                    self.homeView.studyCollectionView.reloadData()
+                for subjectGoalResponse in result.result.subjectPreviewDTOList {
+                    self.subjects.append(SubjectModel(id: subjectGoalResponse.id,title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분"))
                     self.updateTopView()
+                    self.homeView.studyCollectionView.reloadData()
                 }
                 
             })
@@ -95,6 +96,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
     
     @objc private func deleteButtonTapped(_ sender: UIButton) {
         let index = sender.tag
+        let id = subjects[index].id
+        print(id)
+        CommonRepository.shared.deleteSubject(subjectId: id)
+            .sink(receiveCompletion: { error in
+                print("deletesubejct")
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+            })
+            .store(in: &cancellable)
         guard subjects.indices.contains(index) else { return }
         subjects.remove(at: index)
         homeView.studyCollectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
@@ -107,14 +118,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
                 homeView.studyCollectionView.reloadItems(at: indexPaths)
             }
         }
-        CommonRepository.shared.deleteSubject(subjectId: index)
-            .sink(receiveCompletion: { error in
-                print("deletesubejct")
-                print(error)
-            }, receiveValue: { result in
-                print(result)
-            })
-            .store(in: &cancellable)
     }
 }
 

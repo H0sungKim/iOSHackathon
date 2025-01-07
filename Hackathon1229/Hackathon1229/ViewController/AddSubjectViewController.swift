@@ -63,15 +63,15 @@ class AddSubjectViewController: UIViewController {
         let selectedDuration = addSubjectView.timePicker.countDownDuration // 초 단위로 반환
         let hours = Int(selectedDuration) / 3600 // 시간 계산
         let minutes = (Int(selectedDuration) % 3600) / 60 // 분 계산
-        newSubject = SubjectModel(title: addSubjectView.titleTextField.text ?? "선택 안함", time: "\(hours)시간 \(minutes)분")
+        
         CommonRepository.shared.setSubjectGoal(subjectGoalRequest: SubjectGoalRequest(subjectName: addSubjectView.titleTextField.text ?? "", goalHour: hours, goalMinute: minutes))
             .sink(receiveCompletion: { error in
                 print(error)
             }, receiveValue: { result in
-                print(result)
+                self.newSubject = SubjectModel(id: result.result.id,title: result.result.subjectName, time: "\(hours)시간 \(minutes)분")
+                self.delegate?.didAddSubject(self.newSubject!)
             })
             .store(in: &cancellable)
-        delegate?.didAddSubject(newSubject!)
         dismiss(animated: true, completion: nil)
     }
 
