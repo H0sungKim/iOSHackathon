@@ -87,16 +87,13 @@ class ChartCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(126 * time / 60)
         })
-        index%2 == 0 ? fillColor(greenEnum: .light) : fillColor(greenEnum: .dark)
+        fillColor(index: index)
     }
     
-    private func fillColor(greenEnum: GreenEnum) {
-        switch greenEnum {
-        case .none:
-            chartView.backgroundColor = UIColor(hexCode: "#E0E0E0")
-        case .light:
+    private func fillColor(index: Int) {
+        if index%2 == 0 {
             chartView.backgroundColor = UIColor(hexCode: "#B2DFB2")
-        case .dark:
+        } else {
             chartView.backgroundColor = UIColor(hexCode: "#51C878")
         }
     }

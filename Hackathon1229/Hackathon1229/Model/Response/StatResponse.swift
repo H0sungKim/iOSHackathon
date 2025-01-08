@@ -20,6 +20,6 @@ struct StatResponse: Codable {
     let allDateInfoList: [AllDateInfoList]
     struct AllDateInfoList: Codable {
         let date: String
-        let totalStudyTime: Float?
+        let colorFlag: Int
     }
 }

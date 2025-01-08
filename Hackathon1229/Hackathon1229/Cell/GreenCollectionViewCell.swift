@@ -9,9 +9,11 @@ import UIKit
 import SnapKit
 
 enum GreenEnum: Int {
-    case none
-    case light
-    case dark
+    case none = 0
+    case green1
+    case green2
+    case green3
+    case green4
 }
 
 class GreenCollectionViewCell: UICollectionViewCell {
@@ -48,10 +50,14 @@ class GreenCollectionViewCell: UICollectionViewCell {
         switch color {
         case .none:
             greenView.backgroundColor = UIColor(hexCode: "#E0E0E0")
-        case .light:
-            greenView.backgroundColor = UIColor(hexCode: "#B2DFB2")
-        case .dark:
-            greenView.backgroundColor = UIColor(hexCode: "#51C878")
+        case .green1:
+            greenView.backgroundColor = UIColor(red: 31/255, green: 67/255, blue: 43/255, alpha: 1)
+        case .green2:
+            greenView.backgroundColor = UIColor(red: 46/255, green: 107/255, blue: 56/255, alpha: 1)
+        case .green3:
+            greenView.backgroundColor = UIColor(red: 82/255, green: 164/255, blue: 78/255, alpha: 1)
+        case .green4:
+            greenView.backgroundColor = UIColor(red: 107/255, green: 205/255, blue: 98/255, alpha: 1)
         }
     }
     
