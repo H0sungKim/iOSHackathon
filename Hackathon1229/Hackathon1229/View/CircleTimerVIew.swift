@@ -280,7 +280,7 @@ class CircleTimerView: UIView {
 
         // 시간 초기화
         remainingTime = duration
-        timerLabel.text = formatTime(from: remainingTime)
+        timerLabel.text = formatTime(from: 0)
         
         // 실행 상태 초기화
         isRunning = false

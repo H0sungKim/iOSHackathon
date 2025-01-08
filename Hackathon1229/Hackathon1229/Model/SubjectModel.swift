@@ -11,10 +11,12 @@ struct SubjectModel {
     let id: Int
     let title: String
     let time: String
+    let remainTime: Float
     
-    init(id: Int, title: String, time: String) {
+    init(id: Int, title: String, time: String, remainTime: Float) {
         self.id = id
         self.title = title
         self.time = time
+        self.remainTime = remainTime
     }
 }

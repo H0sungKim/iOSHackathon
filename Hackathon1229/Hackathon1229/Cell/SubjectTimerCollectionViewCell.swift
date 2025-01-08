@@ -44,6 +44,12 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
         $0.layer.cornerRadius = 9
     }
     
+    lazy var remainTime = UILabel().then {
+        $0.textColor = UIColor(hexCode: "#797979")
+        $0.textAlignment = .center
+        $0.font = .systemFont(ofSize: 14, weight: .regular)
+    }
+    
     lazy var restLabel = UILabel().then {
         $0.text = "휴식 10분"
         $0.textColor = UIColor(hexCode: "#797979")
@@ -63,6 +69,7 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
         main.addSubview(deleteBtn)
         main.addSubview(title)
         main.addSubview(time)
+        main.addSubview(remainTime)
         main.addSubview(restTime)
         restTime.addSubview(restLabel)
         
@@ -105,5 +112,10 @@ class SubjectTimerCollectionViewCell: UICollectionViewCell {
         restLabel.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
         }
+        
+        remainTime.snp.makeConstraints({ make in
+            make.leading.equalTo(title.snp.leading)
+            make.top.equalTo(title.snp.bottom)
+        })
     }
 }

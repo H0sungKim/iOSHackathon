@@ -33,7 +33,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
                 print(result)
                 self.subjects = []
                 for subjectGoalResponse in result.result.subjectPreviewDTOList {
-                    self.subjects.append(SubjectModel(id: subjectGoalResponse.id,title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분"))
+                    self.subjects.append(SubjectModel(id: subjectGoalResponse.id,title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분", remainTime: subjectGoalResponse.remainTime ?? 0))
                     self.updateTopView()
                     self.homeView.studyCollectionView.reloadData()
                 }
@@ -137,6 +137,10 @@ extension HomeViewController: UICollectionViewDataSource {
         let subject = subjects[indexPath.row]
         cell.title.text = subject.title
         cell.time.text = subject.time
+        let hour: Int = Int(subject.remainTime*60) / 3600
+        let minute: Int = Int(subject.remainTime*60) % 3600 / 60
+        let second: Int = Int(subject.remainTime*60) % 60
+        cell.remainTime.text = "\(hour):\(minute):\(second)"
         
         cell.deleteBtn.tag = indexPath.row
         cell.deleteBtn.addTarget(self, action: #selector(deleteButtonTapped(_:)), for: .touchUpInside)

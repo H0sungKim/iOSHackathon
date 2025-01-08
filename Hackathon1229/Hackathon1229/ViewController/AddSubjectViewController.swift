@@ -68,7 +68,7 @@ class AddSubjectViewController: UIViewController {
             .sink(receiveCompletion: { error in
                 print(error)
             }, receiveValue: { result in
-                self.newSubject = SubjectModel(id: result.result.id,title: result.result.subjectName, time: "\(hours)시간 \(minutes)분")
+                self.newSubject = SubjectModel(id: result.result.id,title: result.result.subjectName, time: "\(hours)시간 \(minutes)분", remainTime: result.result.remainTime ?? 0)
                 self.delegate?.didAddSubject(self.newSubject!)
             })
             .store(in: &cancellable)
