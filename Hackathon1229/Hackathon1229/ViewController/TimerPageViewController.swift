@@ -35,12 +35,18 @@ class TimerPageViewController: UIViewController {
             }, receiveValue: { [weak self] result in
                 print(result.result)
                 self?.timerViewControllers = []
-                for index in 0..<result.result.subjectPreviewDTOList.count {
-                    let subjectGoalResponse = result.result.subjectPreviewDTOList[index]
-                    self?.timerViewControllers.append(TimerViewController(index: index,subject: subjectGoalResponse.subjectName, time: subjectGoalResponse.goalTime*60))
+                for index in 0..<result.result.timerPreviewDTOList.count {
+                    let subjectGoalResponse = result.result.timerPreviewDTOList[index]
+                    self?.timerViewControllers.append(TimerViewController(total: self?.timerViewControllers?.count ?? 0,index: index,subject: subjectGoalResponse.subjectName, time: Int(subjectGoalResponse.remainTime ?? Float(subjectGoalResponse.goalTime))*60))
                 }
                 if let firstViewController = self?.timerViewControllers.first {
                     self?.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+                }
+                for index in 0..<(self?.timerViewControllers.count ?? 0) {
+                    guard let timerViewController = self?.timerViewControllers[index] as? TimerViewController else {
+                        return
+                    }
+                    timerViewController.timerView.progressTitle.text = "\(index+1)/\(self!.timerViewControllers.count)"
                 }
             })
             .store(in: &cancellable)

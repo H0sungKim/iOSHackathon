@@ -9,6 +9,11 @@ import UIKit
 import SnapKit
 
 class ChartView: UIView {
+    
+    var onClickSubject: ((Int, String) -> Void)?
+    var onClickAll: (() -> Void)?
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
@@ -335,7 +340,7 @@ class ChartView: UIView {
     
     private lazy var lbStudytime: UILabel = {
         let label = UILabel()
-        label.text = "00:26:12"
+        label.text = "00:00:00"
         label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textColor = UIColor(hexCode: "#3B9B5B")
         return label
@@ -356,7 +361,7 @@ class ChartView: UIView {
     
     private lazy var lbAttainmentrate: UILabel = {
         let label = UILabel()
-        label.text = "30%"
+        label.text = "0%"
         label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textColor = UIColor(hexCode: "#3B9B5B")
         return label
@@ -404,6 +409,7 @@ class ChartView: UIView {
         var container = AttributeContainer()
         container.font = UIFont.systemFont(ofSize: 16)
         container.foregroundColor = UIColor(hexCode: "#797979")
+        button.tintColor = UIColor(hexCode: "#797979")
         configuration.attributedTitle = AttributedString("모든 과목", attributes: container)
         
         button.configuration = configuration
@@ -520,13 +526,17 @@ class ChartView: UIView {
     
     func updateView(statResponse: StatResponse) {
         var menu: [UIAction] = [
-            UIAction(title: "전체보기", handler: {_ in}),
+            UIAction(title: "전체보기", handler: {_ in
+                self.onClickAll?()
+            }),
         ]
-        for keyword in statResponse.allKeywords {
-            menu.append(UIAction(title: keyword, handler: {_ in}))
+        for index in 0..<statResponse.allKeywords.count {
+            menu.append(UIAction(title: statResponse.allKeywords[index], handler: {_ in
+                self.onClickSubject?(index, statResponse.allKeywords[index])
+            }))
         }
         btnSubject.menu = UIMenu(title: "과목을 골라주세요.", identifier: nil, options: .displayInline, children: menu)
-        let goalTime: Int = statResponse.goalTime ?? 0
+        let goalTime: Int = statResponse.goalTime ?? 1
         let totalStudyTime: Int = Int(statResponse.totalStudyTime ?? 0)
         lbTargettime.text = "\(goalTime/60):\(goalTime%60):00"
         lbStudytime.text = "\(totalStudyTime/60):\(totalStudyTime%60):00"

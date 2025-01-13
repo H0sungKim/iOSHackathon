@@ -9,5 +9,5 @@ import Foundation
 
 struct SubjectsResponse: Codable {
     let totalRemainTime: Float
-    let subjectPreviewDTOList: [SubjectGoalResponse]
+    let timerPreviewDTOList: [SubjectGoalResponse]
 }

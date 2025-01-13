@@ -26,10 +26,10 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         stopTimer1()
         
         timerView.updateView(subject: subject, duration: duration)
-        timerView.btn1.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
+        timerView.btn1.addTarget(self, action: #selector(add10minutes), for: .touchUpInside)
     }
     
-    init(index: Int, subject: String, time: Int) {
+    init(total: Int, index: Int, subject: String, time: Int) {
         super.init(nibName: nil, bundle: nil)
         timerView.circleTimerView.index = index
         self.subject = subject
@@ -45,6 +45,7 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
             }, receiveValue: { result in
                 self.timerResponse = result.result
                 self.setupDelegate()
+                self.timerView.progressTitle.text = "\(index+1)/\(total)"
                 print(result)
             })
             .store(in: &cancellable)
@@ -54,7 +55,7 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var timerView = TimerView()
+    public lazy var timerView = TimerView()
   
     private func setupDelegate() {
         timerView.collectionView.dataSource = self
@@ -67,6 +68,11 @@ class TimerViewController: UIViewController, UICollectionViewDelegate {
     
     @objc private func stopTimer1() {
         timerView.btn2.addTarget(timerView.circleTimerView, action: #selector(timerView.circleTimerView.realStopTimer), for: .touchUpInside)
+    }
+    
+    @objc private func add10minutes() {
+        timerView.circleTimerView.duration += 600
+        timerView.circleTimerView.setNeedsDisplay()
     }
 
     

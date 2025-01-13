@@ -25,22 +25,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         self.view = homeView
         self.navigationController?.isNavigationBarHidden = true
         setupDataSource()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         CommonRepository.shared.getSubjects()
             .sink(receiveCompletion: { error in
                 print("getsubjects")
                 print(error)
             }, receiveValue: { result in
                 print(result)
+                
                 self.subjects = []
-                for subjectGoalResponse in result.result.subjectPreviewDTOList {
+                for subjectGoalResponse in result.result.timerPreviewDTOList {
                     self.subjects.append(SubjectModel(id: subjectGoalResponse.id,title: subjectGoalResponse.subjectName, time: "\(subjectGoalResponse.goalTime/60)시간 \(subjectGoalResponse.goalTime%60)분", remainTime: subjectGoalResponse.remainTime ?? 0))
                     self.updateTopView()
                     self.homeView.studyCollectionView.reloadData()
                 }
-                
+                self.homeView.topView.mainTitle.text = "목표 시간까지 \(Int(result.result.totalRemainTime/60))시간 \(Int(result.result.totalRemainTime) % 60)분!🔥"
             })
             .store(in: &cancellable)
-        
     }
     
     private func updateTopView() {
@@ -60,6 +63,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goModal))
         view.plus.addGestureRecognizer(tapGesture)
         view.continueBtn.addTarget(self, action: #selector(goTimer), for: .touchUpInside)
+        view.backButton.addTarget(self, action: #selector(back), for: .touchUpInside)
         return view
     }()
     
@@ -72,6 +76,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UISheetPre
         if let tabBarController = self.tabBarController {
             tabBarController.selectedIndex = 1
         }
+    }
+    @objc private func back() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func goModal() {

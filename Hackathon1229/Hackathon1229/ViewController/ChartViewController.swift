@@ -104,18 +104,44 @@ class ChartViewController: UIViewController {
         chartView.setStvMonth(monthEnum: .january)
         chartView.cvTotalStudy.dataSource = greenCollcetionViewHandler
         chartView.cvTotalStudy.delegate = greenCollcetionViewHandler
-        
+        chartView.onClickSubject = { index, title in
+            self.onClickSubject(index: index+1, title: title)
+        }
+        chartView.onClickAll = {
+            CommonRepository.shared.getStatistics(date: CalendarManager.shared.toStringForAPI(date: self.date))
+                .sink(receiveCompletion: { error in
+                    print(error)
+                }, receiveValue: { result in
+                    print(result)
+                    self.greenCollcetionViewHandler.statResponse = result.result
+                    self.chartView.cvTotalStudy.reloadData()
+                })
+                .store(in: &self.cancellable)
+            self.chartView.btnSubject.setTitle("모든 과목", for: .normal)
+        }
         chartView.cvStudyChart.dataSource = chartCollectionViewHandler
         chartView.btnSubject.showsMenuAsPrimaryAction = true
         chartView.lbDay.text = CalendarManager.shared.toString(date: date)
         chartView.btnSubject.menu = UIMenu(title: "과목을 골라주세요.", identifier: nil, options: .displayInline, children: [
-            UIAction(title: "전체보기", handler: {_ in}),
+            UIAction(title: "전체보기", handler: { _ in }),
         ])
         chartView.btnDayBefore.addTarget(self, action: #selector(onClickDayBefore), for: .touchUpInside)
         chartView.btnDayAfter.addTarget(self, action: #selector(onClickDayAfter), for: .touchUpInside)
         
         return chartView
     }()
+    
+    private func onClickSubject(index: Int, title: String) {
+        CommonRepository.shared.getStatisticsSubject(date: CalendarManager.shared.toStringForAPI(date: date), keywordId: index)
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { result in
+                print(result)
+                self.greenCollcetionViewHandler.statResponse = result.result
+                self.chartView.cvTotalStudy.reloadData()
+            })
+        chartView.btnSubject.setTitle(title, for: .normal)
+    }
     
     @objc func onClickDayBefore() {
         guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return }

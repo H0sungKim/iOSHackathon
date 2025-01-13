@@ -39,6 +39,12 @@ class HomeView: UIView {
         $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
         $0.layer.cornerRadius = 10
     }
+    public lazy var backButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        return button
+    }()
+    
 
     private func setupView() {
         [
@@ -46,8 +52,15 @@ class HomeView: UIView {
             studyCollectionView,
             plus,
             continueBtn,
+            backButton
         ].forEach {
             addSubview($0)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.leading.equalTo(safeAreaLayoutGuide).offset(16)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(16)
+            $0.width.height.equalTo(32)
         }
         
         topView.snp.makeConstraints {

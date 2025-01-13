@@ -245,6 +245,8 @@ class CircleTimerView: UIView {
         // UI 갱신
         timerLabel.text = formatTime(from: remainingTime)
         endTime = CalendarManager.shared.getISO8601DateFormatter()
+        
+        print( "HOSUNGKIM: \(endTime)")
         CommonRepository.shared.pauseTimer(subjectId: index, param: TimerRequest(startTime: startTime!, endTime: endTime!))
             .throttle(for: 1, scheduler: RunLoop.main, latest: true)
             .sink(receiveCompletion: { error in
@@ -253,6 +255,7 @@ class CircleTimerView: UIView {
                 print(self.index)
                 print(self.startTime)
                 print(self.endTime)
+                print(result)
                 if result.code == "DATEPLAN4003" {
                     self.presentAlert?()
                 }
@@ -286,13 +289,14 @@ class CircleTimerView: UIView {
         isRunning = false
         print("Timer reset to initial state") // 디버깅 로그
         endTime = CalendarManager.shared.getISO8601DateFormatter()
-        CommonRepository.shared.stopTimer(subjectId: index, param: TimerRequest(startTime: startTime!, endTime: endTime!))
+        CommonRepository.shared.stopTimer(subjectId: index, param: TimerRequest(startTime: startTime ?? "", endTime: endTime ?? ""))
             .sink(receiveCompletion: { error in
                 print(error)
             }, receiveValue: { result in
                 print(self.index)
                 print(self.startTime)
                 print(self.endTime)
+                print(result)
                 if result.code == "DATEPLAN4003" {
                     self.presentAlert?()
                 }

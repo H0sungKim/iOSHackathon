@@ -85,7 +85,7 @@ class ChartCollectionViewCell: UICollectionViewCell {
         chartView.snp.remakeConstraints({ make in
             make.bottom.equalTo(lbTime.snp.top).offset(-7)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(126 * time / 60)
+            make.height.equalTo(126 * time / 80 + 8)
         })
         fillColor(index: index)
     }

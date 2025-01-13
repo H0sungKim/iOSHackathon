@@ -20,6 +20,7 @@ enum CommonRestAPI {
     case getStatisticsSubject(date: String, keywordId: Int)
     case getRecommendedKeywords(userInput: String)
     case startTimer(subjectId: Int)
+    case getGoal
 }
 
 extension CommonRestAPI: TargetType {
@@ -51,16 +52,18 @@ extension CommonRestAPI: TargetType {
             return "/home/lists/add"
         case .startTimer(let subjectId):
             return "/timer/\(subjectId)/start"
+        case .getGoal:
+            return "/home"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .setGoal, .setSubjectGoal, .stopTimer, .pauseTimer, .startTimer:
+        case .setGoal, .setSubjectGoal, .getTimer, .startTimer:
             return .post
-        case .getSubjects, .getTimer, .getStatistics, .getStatisticsSubject, .getRecommendedKeywords:
+        case .getSubjects, .getStatistics, .getStatisticsSubject, .getRecommendedKeywords, .getGoal:
             return .get
-        case .deleteSubject:
+        case .deleteSubject, .stopTimer, .pauseTimer:
             return .patch
         }
     }
@@ -77,14 +80,14 @@ extension CommonRestAPI: TargetType {
             return .requestJSONEncodable(param)
         case .getRecommendedKeywords(let userInput):
             return .requestParameters(parameters: ["userInput": userInput], encoding: URLEncoding.default)
-        case .getSubjects, .getTimer, .deleteSubject, .getStatistics, .getStatisticsSubject, .startTimer:
+        case .getSubjects, .getTimer, .deleteSubject, .getStatistics, .getStatisticsSubject, .startTimer, .getGoal:
             return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .deleteSubject, .getStatisticsSubject, .getStatistics, .getRecommendedKeywords, .startTimer:
+        case .setGoal, .setSubjectGoal, .pauseTimer, .stopTimer, .getSubjects, .getTimer, .deleteSubject, .getStatisticsSubject, .getStatistics, .getRecommendedKeywords, .startTimer, .getGoal:
             return ["Content-Type": "application/json"]
         }
     }

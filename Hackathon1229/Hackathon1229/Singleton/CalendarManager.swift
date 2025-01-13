@@ -53,14 +53,21 @@ class CalendarManager {
         return calendar.ordinality(of: .day, in: .year, for: date)
     }
     
+    func getDateFromString(from dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // 안정적인 파싱을 위해 설정
+
+        return dateFormatter.date(from: dateString)
+    }
+    
     func getISO8601DateFormatter() -> String {
         let now = Date()
-
+        let koreaNow = Calendar.current.date(byAdding: .hour, value: 9, to: now)!
         let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.timeZone = TimeZone(secondsFromGMT: 9)
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         
-        let isoDateString = isoFormatter.string(from: now)
+        let isoDateString = isoFormatter.string(from: koreaNow)
         return isoDateString
     }
 }

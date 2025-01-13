@@ -51,13 +51,13 @@ class GreenCollectionViewCell: UICollectionViewCell {
         case .none:
             greenView.backgroundColor = UIColor(hexCode: "#E0E0E0")
         case .green1:
-            greenView.backgroundColor = UIColor(red: 31/255, green: 67/255, blue: 43/255, alpha: 1)
+            greenView.backgroundColor = UIColor(red: 178/255, green: 223/255, blue: 178/255, alpha: 1)
         case .green2:
-            greenView.backgroundColor = UIColor(red: 46/255, green: 107/255, blue: 56/255, alpha: 1)
+            greenView.backgroundColor = UIColor(red: 81/255, green: 200/255, blue: 120/255, alpha: 1)
         case .green3:
-            greenView.backgroundColor = UIColor(red: 82/255, green: 164/255, blue: 78/255, alpha: 1)
+            greenView.backgroundColor = UIColor(red: 30/255, green: 171/255, blue: 76/255, alpha: 1)
         case .green4:
-            greenView.backgroundColor = UIColor(red: 107/255, green: 205/255, blue: 98/255, alpha: 1)
+            greenView.backgroundColor = UIColor(red: 20/255, green: 114/255, blue: 51/255, alpha: 1)
         }
     }
     

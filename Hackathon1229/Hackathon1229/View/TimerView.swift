@@ -30,7 +30,7 @@ class TimerView: UIView {
         $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
     }
     
-    private lazy var progressTitle = UILabel().then {
+    public lazy var progressTitle = UILabel().then {
         $0.text = "1/5"
         $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         $0.textColor = UIColor(hexCode: "9A9A9A")

@@ -41,17 +41,17 @@ class CommonRepository {
             .eraseToAnyPublisher()
     }
     
-    func stopTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
+    func stopTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<DefaultResponse<RemainResponse>, MoyaError> {
         return provider.requestPublisher(.stopTimer(subjectId: subjectId, param: param))
-            .map(DefaultResponse<String>.self)
+            .map(DefaultResponse<RemainResponse>.self)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
-    func pauseTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
+    func pauseTimer(subjectId: Int, param: TimerRequest) -> AnyPublisher<DefaultResponse<RemainResponse>, MoyaError> {
         return provider.requestPublisher(.pauseTimer(subjectId: subjectId, param: param))
-            .map(DefaultResponse<String>.self)
+            .map(DefaultResponse<RemainResponse>.self)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -101,6 +101,14 @@ class CommonRepository {
     func startTimer(subjectId: Int) -> AnyPublisher<DefaultResponse<String>, MoyaError> {
         return provider.requestPublisher(.startTimer(subjectId: subjectId))
             .map(DefaultResponse<String>.self)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func getGoal() -> AnyPublisher<DefaultResponse<PresentResponse>, MoyaError> {
+        return provider.requestPublisher(.getGoal)
+            .map(DefaultResponse<PresentResponse>.self)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
