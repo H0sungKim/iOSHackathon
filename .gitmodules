@@ -1,3 +1,3 @@
 [submodule "backend"]
 	path = backend
-	url = https://github.com/Godot-B/studytimer-backend
+	url = git@github.com:Godot-B/studyTimer.git
